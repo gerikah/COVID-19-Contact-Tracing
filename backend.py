@@ -15,3 +15,11 @@ class COVID_Contacts_Informations:
         except Exception as e: # error message
             raise Exception(f"Failed to load address book: {str(e)}")
         
+    # adding contact
+    # save contact
+    # editing existing contact
+    # deleting contact
+    # search contact from the file
+    
+    
+
