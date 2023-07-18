@@ -5,6 +5,7 @@ class COVID_Contacts_Informations:
     def __init__(self):
         self.all_contacts = []
 
+    # reading contact
     def contacts(self): # to load the contacts saved in csv
         try:
             with open("covid_contacts_record.csv", mode="r") as file:
@@ -16,10 +17,17 @@ class COVID_Contacts_Informations:
             raise Exception(f"Failed to load address book: {str(e)}")
         
     # adding contact
+    def add_contact(self, first_name, last_name, address, contact_number): # infos. NOT FINAL
+        first_name
+        last_name
+        address
+        contact_number
+
+
     # save contact
     # editing existing contact
     # deleting contact
     # search contact from the file
-    
+
     
 
