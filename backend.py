@@ -17,12 +17,15 @@ class COVID_Contacts_Informations:
             raise Exception(f"Failed to load address book: {str(e)}")
         
     # adding contact
-    def add_contact(self, first_name, last_name, address, contact_number): # infos. NOT FINAL
-        first_name
-        last_name
-        address
-        contact_number
-
+    def add_contact(self, first_name, last_name, address, contact_number, date): # infos
+        if any(char.isdigit() for char in first_name):
+            raise Exception("First Name cannot contain numbers.")
+        if any(char.isdigit() for char in last_name):
+            raise Exception("Last Name cannot contain numbers.")
+        if any(contact[2] == address and contact[3] == int(contact_number) for contact in self.new_contacts):
+            raise Exception("The contact already exists in the address book.")
+        if any(char.isalpha() for char in date):
+            raise Exception("Date cannot contain letters.")
 
     # save contact
     # editing existing contact
