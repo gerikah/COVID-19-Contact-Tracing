@@ -46,6 +46,27 @@ class COVID_Contacts_Informations:
             raise Exception(f"Failed to save address book: {str(e)}")
         
     # editing existing contact
+    def edit_contact(self, contact_id, field, new_value):
+        try:
+            contact_id = int(contact_id)
+            if 1 <= contact_id <= len(self.new_contacts):
+                contact = self.new_contacts[contact_id - 1]
+                if field == "First Name":
+                    contact[0] = new_value
+                elif field == "Last Name":
+                    contact[1] = new_value
+                elif field == "Address":
+                    contact[2] = new_value
+                elif field == "Contact Number":
+                    contact[3] = new_value
+                elif field == "Date":
+                    contact[-1] = new_value
+                self.save_contacts()
+            else:
+                raise Exception("Invalid contact ID.")
+        except ValueError:
+            raise Exception("Contact ID must be a valid number.")
+
     # deleting contact
     # search contact from the file
 
