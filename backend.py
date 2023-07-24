@@ -68,7 +68,37 @@ class COVID_Contacts_Informations:
             raise Exception("Contact ID must be a valid number.")
 
     # deleting contact
+    def delete_contact(self, contact_id):
+        try:
+            contact_id = int(contact_id)
+            if 1 <= contact_id <= len(self.new_contacts):
+                contact = self.new_contacts[contact_id - 1]
+                self.new_contacts.remove(contact)
+                self.save_contacts()
+            else:
+                raise Exception("Invalid contact ID.")
+        except ValueError:
+            raise Exception("Contact ID must be a valid number.")
+ 
+    # for retrieving the contacts currently stored
+    def get_all_contacts(self):
+        return self.all_contacts + self.new_contacts      
+      
     # search contact from the file
+    def search_contacts (self, search_criteria, search_query):
+        results = []
+        for contact in self.new_contacts:
+            if search_criteria == "Last Name" and search_query.lower() in contact[1].lower():
+                results.append(contact)
+            elif search_criteria == "First Name" and search_query.lower() in contact[0].lower():
+                results.append(contact)
+            elif search_criteria == "Address" and search_query.lower() in contact[2].lower():
+                results.append(contact)
+            elif search_criteria == "Contact Number" and search_query.lower() in str(contact[3]):
+                results.append(contact)
+            elif search_criteria == "Date" and search_query.lower() in contact[4].lower():
+                results.append(contact)
+        return results
 
     
 
