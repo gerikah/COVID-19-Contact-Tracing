@@ -26,8 +26,25 @@ class COVID_Contacts_Informations:
             raise Exception("The contact already exists in the address book.")
         if any(char.isalpha() for char in date):
             raise Exception("Date cannot contain letters.")
-
+        
+        # exeption handling if contact is invalid
+        try:
+            contact_number = int(contact_number)
+            new_contact = [first_name, last_name, address, contact_number, date]
+            self.new_contacts.append(new_contact)
+            self.save_contacts()
+        except ValueError:
+            raise Exception("Contact number must be a valid number.")
+        
     # save contact
+    def save_contact(self):
+        try:
+            with open("COVID-19_contacts.csv", mode="w", newline="") as file:
+                writer = csv.writer(file)
+                writer.writerows(self.all_contacts + self.new_contacts)
+        except Exception as e:
+            raise Exception(f"Failed to save address book: {str(e)}")
+        
     # editing existing contact
     # deleting contact
     # search contact from the file
