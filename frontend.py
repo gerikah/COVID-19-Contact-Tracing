@@ -68,10 +68,40 @@ class COVID_Contacts_Information_GUI:
             self.menu_window = tk.Toplevel(self.master)
             self.menu_window.title("SAFE TRACK")
             self.menu_window.geometry("1000x600")
-            
+
+            # Background Image
+            bg_image = Image.open("background_image.jpg")
+            bg_photo = ImageTk.PhotoImage(bg_image)
+            bg_label = tk.Label(self.master, image=bg_photo)
+            bg_label.image = bg_photo
+
             label = tk.Label(self.menu_window, text="This is the menu window", font=("Poppins", 20))
             label.pack(pady=50)
             
+            # Add Contact Button
+            add_button = tk.Button(self.menu_window, text="Add Contact", font=("Poppins", 16), command=self.add_contact)
+            add_button.pack(pady=10)
+
+            # Edit Contact Button
+            edit_button = tk.Button(self.menu_window, text="Edit Contact", font=("Poppins", 16), command=self.edit_contact)
+            edit_button.pack(pady=10)
+
+            # Delete Contact Button
+            delete_button = tk.Button(self.menu_window, text="Delete Contact", font=("Poppins", 16), command=self.delete_contact)
+            delete_button.pack(pady=10)
+
+            # View Contacts Button
+            view_button = tk.Button(self.menu_window, text="View Contacts", font=("Poppins", 16), command=self.view_contacts)
+            view_button.pack(pady=10)
+
+            # Search Contact Book Button
+            search_button = tk.Button(self.menu_window, text="Search Contact Book", font=("Poppins", 16), command=self.search_contact)
+            search_button.pack(pady=10)
+
+            # Exit Button
+            exit_button = tk.Button(self.menu_window, text="Exit", font=("Poppins", 16), command=self.close_menu_window)
+            exit_button.pack(pady=10)
+
             # Handle the closing event of the menu window
             def on_menu_window_close():
                 self.menu_window.destroy()
