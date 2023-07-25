@@ -29,30 +29,35 @@ class COVID_Contacts_Information_GUI:
         self.canvas.create_rectangle(0, 0, rect_width, rect_height, fill='#370607')
         
         # Font Style
-        font_style = tkfont.Font(family="Poppins", size=50, weight="bold")
+        title_font_style = tkfont.Font(family="Poppins", size=50, weight="bold")
+        welcome_label_font_style = tkfont.Font(family="Poppins", size=20, weight="bold")
+        text_label_font_style = tkfont.Font(family="Poppins", size=10)
 
         # Title
         label_x = rect_width / 2
         label_y = rect_height / 5.5
-        self.label_title = tk.Label(self.canvas, text="SAFE TRACK", font=font_style, bg='#370607', fg="white")
+        self.label_title = tk.Label(self.canvas, text="SAFE TRACK", font=title_font_style, bg="#370607", fg="#B0FFFA")
         self.label_title.place(x=label_x, y=label_y, anchor=tk.CENTER)
 
         # Tagline
         label_x = rect_width / 2
         label_y = rect_height / 3.25
-        self.label_welcome = tk.Label(self.canvas, text="Stay Safe, Stay Informed: \nTrack COVID-19 with Confidence!", font=("Poppins", 20), bg='#370607', fg="#B0FFFA")
+        self.label_welcome = tk.Label(self.canvas, text="Stay Safe, Stay Informed: \nTrack COVID-19 with Confidence!", font=welcome_label_font_style, bg='#370607', fg="white")
         self.label_welcome.place(x=label_x, y=label_y, anchor=tk.CENTER)
 
         # App's purpose
         label_x = rect_width / 2
         label_y = rect_height / 1.25
-        self.label_welcome = tk.Label(self.canvas, text="A protective tool that shields us and our loved ones \nby tracking potential COVID-19 virus exposures.", font=("Poppins", 10), bg='#370607', fg="white")
-        self.label_welcome.place(x=label_x, y=label_y, anchor=tk.CENTER)
+        self.label_text = tk.Label(self.canvas, text="A protective tool that shields us and our loved ones \nby tracking potential COVID-19 virus exposures.", font=text_label_font_style, bg='#370607', fg="#B0FFFA")
+        self.label_text.place(x=label_x, y=label_y, anchor=tk.CENTER)
 
         self.menu_window = None  # Store the menu window reference
 
-        self.start_button = tk.Button(self.master, text="Start", command=self.show_menu)
-        self.start_button.pack(pady=50)
+        # Start button
+        button_x = rect_width / 2
+        button_y = (label_y + rect_height) / 3.25
+        self.start_button = tk.Button(self.canvas, text="START", font=("Poppins", 30), command=self.show_menu, bg="#006B65", fg="#370607")
+        self.start_button.place(x=button_x, y=button_y, anchor=tk.CENTER)
 
         # Contact Book
         self.contact_book = COVID_Contacts_Informations()
