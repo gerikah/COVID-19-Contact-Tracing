@@ -64,7 +64,8 @@ class COVID_Contacts_Information_GUI:
     
     # New window when start button has been clicked
     def show_menu(self):
-        if self.menu_window is None:
+        if self.menu_window is None or not self.menu_window.winfo_exists():
+        # If the menu window doesn't exist or is already closed, create a new one
             self.menu_window = tk.Toplevel(self.master)
             self.menu_window.title("SAFE TRACK")
             self.menu_window.geometry("1000x600")
@@ -74,9 +75,7 @@ class COVID_Contacts_Information_GUI:
             bg_photo = ImageTk.PhotoImage(bg_image)
             bg_label = tk.Label(self.master, image=bg_photo)
             bg_label.image = bg_photo
-
-            label = tk.Label(self.menu_window, text="This is the menu window", font=("Poppins", 20))
-            label.pack(pady=50)
+            bg_label.place(x=0, y=2, relwidth=1, relheight=1)
             
             # Add Contact Button
             add_button = tk.Button(self.menu_window, text="Add Contact", font=("Poppins", 16), command=self.add_contact)
@@ -101,14 +100,9 @@ class COVID_Contacts_Information_GUI:
             # Exit Button
             exit_button = tk.Button(self.menu_window, text="Exit", font=("Poppins", 16), command=self.close_menu_window)
             exit_button.pack(pady=10)
-
-            # Handle the closing event of the menu window
-            def on_menu_window_close():
-                self.menu_window.destroy()
-                self.menu_window = None
             
             # Set the function to be called when the menu window is closed
-            self.menu_window.protocol("WM_DELETE_WINDOW", on_menu_window_close)
+            self.menu_window.protocol("WM_DELETE_WINDOW", self.close_menu_window)
 
             # Hide the main window
             self.master.withdraw()
@@ -116,6 +110,12 @@ class COVID_Contacts_Information_GUI:
         else:
             # If the menu window is already open, just bring it to the front
             self.menu_window.lift()
+    
+    # Destroy the menu window and show the main window
+    def close_menu_window(self):
+        self.menu_window.destroy()
+        self.menu_window = None
+        self.master.deiconify()
 
 root = tk.Tk()
 gui = COVID_Contacts_Information_GUI(root)
