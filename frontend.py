@@ -61,9 +61,31 @@ class COVID_Contacts_Information_GUI:
 
         # Contact Book
         self.contact_book = COVID_Contacts_Informations()
-        
+    
+    # New window when start button has been clicked
     def show_menu(self):
-        pass
+        if self.menu_window is None:
+            self.menu_window = tk.Toplevel(self.master)
+            self.menu_window.title("SAFE TRACK")
+            self.menu_window.geometry("1000x600")
+            
+            label = tk.Label(self.menu_window, text="This is the menu window", font=("Poppins", 20))
+            label.pack(pady=50)
+            
+            # Handle the closing event of the menu window
+            def on_menu_window_close():
+                self.menu_window.destroy()
+                self.menu_window = None
+            
+            # Set the function to be called when the menu window is closed
+            self.menu_window.protocol("WM_DELETE_WINDOW", on_menu_window_close)
+
+            # Hide the main window
+            self.master.withdraw()
+            
+        else:
+            # If the menu window is already open, just bring it to the front
+            self.menu_window.lift()
 
 root = tk.Tk()
 gui = COVID_Contacts_Information_GUI(root)
