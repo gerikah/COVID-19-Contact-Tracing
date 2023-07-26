@@ -211,112 +211,80 @@ class COVID_Contacts_Information:
         except Exception as e:
             messagebox.showerror("Error", f"Failed to save address book: {str(e)}")
         
-    
-
     def edit_contact(self):
-        contact_id = simpledialog.askstring("Edit Contact", "Enter Contact ID:")
-        if contact_id:
-            try:
-                contact_id = int(contact_id)  # Convert the contact ID to an integer
-                if 1 <= contact_id <= len(self.new_contacts):
-                    contact = self.new_contacts[contact_id - 1]  # Get the contact based on the ID
-                    edit_options = ["First Name", "Last Name", "Email Address", "Contact Number"]
-                    selected_option = tk.StringVar()
-                    selected_option.set("Edit by:")
+        def edit_selected_contact():
+            # Get the selected contact from the listbox
+            selected_index = contact_listbox.curselection()
+            if selected_index:
+                selected_contact = self.new_contacts[selected_index[0]]
+                edit_window.destroy()
+                self.edit_selected_contact_fields(selected_contact)
+            else:
+                messagebox.showinfo("Invalid Input", "Please select a contact to edit.")
 
-                    # Create the edit contact window
-                    edit_window = tk.Toplevel(self.master)
-                    edit_window.title("Edit Contact")
-                    edit_window.geometry("300x200")
-                    edit_window.resizable(False, False)
+        def cancel_edit():
+            edit_window.destroy()
 
-                    # Entry fields
-                    edit_label = tk.Label(edit_window, text="Select field to edit:")
-                    edit_label.pack()
+        # Create the "Edit Contact" window
+        edit_window = tk.Toplevel(self.menu_window)
+        edit_window.title("Edit Contact")
+        edit_window.geometry("1000x600")
+        edit_window.resizable(False, False)
 
-                    dropdown = tk.OptionMenu(edit_window, selected_option, *edit_options)
-                    dropdown.pack(pady=10)
+        # Get all contacts' full names for the listbox
+        contact_names = [f"{contact[0]} {contact[1]}" for contact in self.new_contacts]
 
-                    new_value_label = tk.Label(edit_window, text="Enter new value:")
-                    new_value_label.pack()
+        # Listbox to display the contacts
+        contact_listbox = tk.Listbox(edit_window, width=30, height=10, selectmode=tk.SINGLE)
+        for name in contact_names:
+            contact_listbox.insert(tk.END, name)
+        contact_listbox.pack(pady=10)
 
-                    new_value_entry = tk.Entry(edit_window)
-                    new_value_entry.pack()
+        # Button to select the contact to edit
+        select_button = tk.Button(edit_window, text="Select", command=edit_selected_contact)
+        select_button.pack(pady=5)
 
-                    def save_edit():
-                        new_value = new_value_entry.get()
-                        if new_value:
-                            selected_option_value = selected_option.get()
+        # Hide the menu window while the "Edit Contact" window is open
+        self.menu_window.withdraw()
 
-                            # Validate new value for First Name or Last Name
-                            if selected_option_value in ["First Name", "Last Name"]:
-                                if not new_value.isalpha():
-                                    messagebox.showinfo("Invalid Input", "Please enter alphabetical letters only.")
-                                    return
+    def edit_selected_contact_fields(self, contact):
+        def save_edited_contact(contact, fields):
+            for option in edit_options:
+                new_value = fields[option].get()
+                if new_value:
+                    contact[edit_options.index(option)] = new_value
+            self.save_contacts()
+            messagebox.showinfo("Success", "Contact updated successfully.")
+            edit_window.destroy()
+            self.show_menu()
 
-                            if selected_option_value == "Contact Number":
-                                # Allow spaces and "+" sign in the contact number
-                                new_value = new_value.replace(" ", "").replace("+", "")
-
-                            # Check if the new value already exists in the address book
-                            if selected_option_value == "Email Address":
-                                duplicate = any(
-                                    contact[2] == new_value and contact[3] == contact[-1] for contact in self.new_contacts
-                                )
-                            elif selected_option_value == "Contact Number":
-                                duplicate = any(
-                                    contact[2] == contact[2] and contact[3] == str(new_value) for contact in self.new_contacts
-                                )
-                            else:
-                                duplicate = False
-
-                            if duplicate:
-                                messagebox.showinfo(
-                                    "Duplicate Entry", "The contact with the new information already exists in the address book."
-                                )
-                            else:
-                                contact[edit_options.index(selected_option_value)] = new_value
-                                messagebox.showinfo("Success", "Contact updated successfully.")
-                                edit_window.destroy()
-                                self.save_contacts()  # Save the updated contacts
-                                self.view_contacts()  # Refresh the view contacts window
-                        else:
-                            messagebox.showinfo("Invalid Input", "New value is required.")
-
-
-                    save_button = tk.Button(edit_window, text="Save", command=save_edit)
-                    save_button.pack()
-
-                else:
-                    messagebox.showinfo("Invalid Input", "Invalid contact ID.")
-            except ValueError:
-                messagebox.showinfo("Invalid Input", "Contact ID must be a valid number.")
-        else:
-            messagebox.showinfo("Invalid Input", "Contact ID is required.")
+        def cancel_edit():
+            edit_window.destroy()
+            self.show_menu()
             
-    def update_contact(self, option, contact):
-        if option == "First Name":
-            new_value = simpledialog.askstring("Edit Contact", "Enter new First Name:")
-            if new_value:
-                contact[0] = new_value
-                messagebox.showinfo("Success", "Contact updated successfully.")
-        elif option == "Last Name":
-            new_value = simpledialog.askstring("Edit Contact", "Enter new Last Name:")
-            if new_value:
-                contact[1] = new_value
-                messagebox.showinfo("Success", "Contact updated successfully.")
-        elif option == "Address":
-            new_value = simpledialog.askstring("Edit Contact", "Enter new Address:")
-            if new_value:
-                contact[2] = new_value
-                messagebox.showinfo("Success", "Contact updated successfully.")
-        elif option == "Contact Number":
-            new_value = simpledialog.askstring("Edit Contact", "Enter new Contact Number:")
-            if new_value:
-                contact[3] = new_value
-                messagebox.showinfo("Success", "Contact updated successfully.")
-        else:
-            messagebox.showinfo("Invalid Input", "Please select a valid option.")
+        # Create the "Edit Contact Fields" window
+        edit_window = tk.Toplevel(self.menu_window)
+        edit_window.title("Edit Contact Fields")
+        edit_window.geometry("1000x600")
+        edit_window.resizable(False, False)
+
+        edit_options = ["First Name", "Last Name", "Email Address", "Contact Number"]
+        fields = {}
+
+        # Entry fields for each contact field
+        for option in edit_options:
+            label = tk.Label(edit_window, text=option)
+            label.pack(pady=5)
+            entry = tk.Entry(edit_window)
+            entry.pack(pady=5)
+            entry.insert(0, contact[edit_options.index(option)])
+            fields[option] = entry
+
+        # Save and Cancel buttons
+        save_button = tk.Button(edit_window, text="Save", command=lambda: save_edited_contact(contact, fields))
+        save_button.pack(pady=10)
+        cancel_button = tk.Button(edit_window, text="Cancel", command=cancel_edit)
+        cancel_button.pack(pady=5)
 
     def delete_contact(self):
         contact_id = simpledialog.askstring("Delete Contact", "Enter Contact ID:")
