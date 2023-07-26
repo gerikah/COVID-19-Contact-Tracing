@@ -74,12 +74,7 @@ class COVID_Contacts_Information_GUI:
         # If the menu window doesn't exist or is already closed, create a new one
             self.menu_frame = tk.Frame(self.master, bg='#370607', width=1000, height=600)
             self.menu_frame.place(x=0, y=0)
-            canvas_width = self.menu_frame.winfo_reqwidth()
-            canvas_height = self.menu_frame.winfo_reqheight()
-            rect_width = canvas_width
-            rect_height = canvas_height
-            self.menu_frame.create_rectangle(0, 0, rect_width, rect_height, fill='#370607')
-
+            
             # Background Image
             bg_image = Image.open("background_image.jpg")
             bg_photo = ImageTk.PhotoImage(bg_image)
