@@ -14,6 +14,7 @@ class COVID_Contacts_Information:
         self.master = master
         self.master.title("SAFE TRACK")
         self.master.geometry("1000x600")
+        self.master.configure(bg="#370607")
         self.load_contacts_from_file()
         self.menu_window = None
         
@@ -88,18 +89,18 @@ class COVID_Contacts_Information:
         self.show_menu()
 
     def create_menu_content(self):
-        self.add_button = tk.Button(self.menu_window, width=20, text="Add Contact", background='#370607', fg="white", font=("Poppins", 12, "bold"), command=self.add_contact)
-        self.add_button.place(x=850, y=80, anchor=tk.NE)
-        self.edit_button = tk.Button(self.menu_window, width=20, text="Edit Contact", background='#370607', fg="white", font=("Poppins", 12, "bold"), command=self.edit_contact)
-        self.edit_button.place(x=850, y=160, anchor=tk.NE)
-        self.delete_button = tk.Button(self.menu_window, width=20, text="Delete Contact", background='#370607', fg="white", font=("Poppins", 12, "bold"), command=self.delete_contact)
-        self.delete_button.place(x=850, y=240, anchor=tk.NE)
-        self.view_button = tk.Button(self.menu_window, width=20, text="View Contacts", background='#370607',fg="white", font=("Poppins", 12, "bold"), command=self.view_contacts)
-        self.view_button.place(x=850, y=320, anchor=tk.NE)
-        self.search_button = tk.Button(self.menu_window, width=20, text="Search Contact", background='#370607', fg="white", font=("Poppins", 12, "bold"), command=self.search_address_book)
-        self.search_button.place(x=850, y=400, anchor=tk.NE)
-        self.exit_button = tk.Button(self.menu_window, width=10, text="Exit", background='#370607', fg="white", font=("Poppins", 12, "bold"), command=self.on_exit)
-        self.exit_button.place(x=805, y=480, anchor=tk.NE)
+        self.add_button = tk.Button(self.menu_window, width=20, text="Add Contact", background='#370607', fg="white", bd=5, font=("Poppins", 12, "bold"), command=self.add_contact)
+        self.add_button.place(x=900, y=80, anchor=tk.NE)
+        self.edit_button = tk.Button(self.menu_window, width=20, text="Edit Contact", background='#370607', fg="white", bd=5, font=("Poppins", 12, "bold"), command=self.edit_contact)
+        self.edit_button.place(x=900, y=160, anchor=tk.NE)
+        self.delete_button = tk.Button(self.menu_window, width=20, text="Delete Contact", background='#370607', fg="white", bd=5, font=("Poppins", 12, "bold"), command=self.delete_contact)
+        self.delete_button.place(x=900, y=240, anchor=tk.NE)
+        self.view_button = tk.Button(self.menu_window, width=20, text="View Contacts", background='#370607',fg="white", bd=5, font=("Poppins", 12, "bold"), command=self.view_contacts)
+        self.view_button.place(x=900, y=320, anchor=tk.NE)
+        self.search_button = tk.Button(self.menu_window, width=20, text="Search Contact", background='#370607', fg="white", bd=5, font=("Poppins", 12, "bold"), command=self.search_address_book)
+        self.search_button.place(x=900, y=400, anchor=tk.NE)
+        self.exit_button = tk.Button(self.menu_window, width=10, text="Exit", background='#370607', fg="white", bd=5, font=("Poppins", 12, "bold"), command=self.on_exit)
+        self.exit_button.place(x=855, y=480, anchor=tk.NE)
 
     def show_menu(self):
         
@@ -114,7 +115,7 @@ class COVID_Contacts_Information:
             self.canvas.pack()
 
             # Add a rectangle on the left side of the canvas
-            self.canvas.create_rectangle(0, 0, 500, 600, fill="#370607")
+            self.canvas.create_rectangle(0, 0, 600, 600, fill="#A6A6A6")
 
             # Load the image
             bg_image = Image.open("C:\\Users\\gerik\\OneDrive\\Documents\\GitHub\\COVID-19-Contact-Tracing\\Menu Window Image - Safe Trace.png")
@@ -129,7 +130,6 @@ class COVID_Contacts_Information:
             self.canvas.create_window(250, 300, window=bg_label)
 
             self.create_menu_content() # Content for menu window
-            
             
         else:
             # If the menu window is already open, just bring it to the front
@@ -358,9 +358,9 @@ class COVID_Contacts_Information:
         tree.heading("Contact Number", text="Contact Number")
 
         # Configure column widths
-        tree.column("#0", width= 50)
-        tree.column("First Name", width=80)
-        tree.column("Last Name", width=80)
+        tree.column("#0", width= 100)
+        tree.column("First Name", width=100)
+        tree.column("Last Name", width=100)
         tree.column("Email Address", width=200)
         tree.column("Contact Number", width=100)
 
