@@ -97,7 +97,7 @@ class COVID_Contacts_Information:
         self.delete_button.place(x=900, y=240, anchor=tk.NE)
         self.view_button = tk.Button(self.menu_window, width=20, text="View Contacts", background='#370607',fg="white", bd=5, font=("Poppins", 12, "bold"), command=self.view_contacts)
         self.view_button.place(x=900, y=320, anchor=tk.NE)
-        self.search_button = tk.Button(self.menu_window, width=20, text="Search Contact", background='#370607', fg="white", bd=5, font=("Poppins", 12, "bold"), command=self.search_address_book)
+        self.search_button = tk.Button(self.menu_window, width=20, text="Search Contact", background='#370607', fg="white", bd=5, font=("Poppins", 12, "bold"), command=self.search_contacts)
         self.search_button.place(x=900, y=400, anchor=tk.NE)
         self.exit_button = tk.Button(self.menu_window, width=10, text="Exit", background='#370607', fg="white", bd=5, font=("Poppins", 12, "bold"), command=self.on_exit)
         self.exit_button.place(x=855, y=480, anchor=tk.NE)
@@ -376,21 +376,15 @@ class COVID_Contacts_Information:
             self.menu_window.deiconify
 
         view_window.protocol("WM_DELETE_WINDOW", close_view_window)
-        
-    def search_address_book(self):
+    
+    def search_contacts(self):
+        self.menu_window.withdraw()  # Hide the menu window while the search window is open
+
         search_window = tk.Toplevel(self.master)
-        search_window.title("Search Address Book")
-        search_window.geometry("400x200")
+        search_window.title("Search Contact")
+        search_window.geometry("1000x600")
         search_window.resizable(False, False)
-
-        label = tk.Label(search_window, text="Select search criteria:")
-        label.pack(pady=10)
-
-        search_options = ["Last Name", "First Name", "Address", "Contact Number"]
-        selected_option = tk.StringVar()
-        selected_option.set("Search by:")
-        dropdown = tk.OptionMenu(search_window, selected_option, *search_options)
-        dropdown.pack()
+        self.search_window = search_window
 
         entry_label = tk.Label(search_window, text="Enter search query:")
         entry_label.pack(pady=10)
@@ -398,54 +392,81 @@ class COVID_Contacts_Information:
         entry = tk.Entry(search_window)
         entry.pack()
 
-        search_button = tk.Button(search_window, text="Search", command=lambda: self.perform_search(selected_option.get(), entry.get()))
+        search_button = tk.Button(search_window, text="Search", command=lambda win=search_window: self.perform_search(None, entry.get(), win))
         search_button.pack(pady=10)
-        
-        search_window.mainloop()
 
-    def perform_search(self, search_criteria, search_query):
+        search_window.protocol("WM_DELETE_WINDOW", self.close_search_window)
+
+    def close_search_window(self):
+        self.search_window.destroy()
+        self.menu_window.deiconify()  # Show the menu window again
+        self.menu_window.lift()
+        
+
+    def perform_search(self, search_criteria, search_query=None, search_window=None):
         if search_query:
             results = []
             for contact in self.new_contacts:
-                if search_criteria == "Last Name" and search_query.lower() in contact[1].lower():
+                if search_criteria is None or search_criteria == "Last Name" and search_query.lower() in contact[1].lower():
                     results.append(contact)
-                elif search_criteria == "First Name" and search_query.lower() in contact[0].lower():
+                elif search_criteria is None or search_criteria == "First Name" and search_query.lower() in contact[0].lower():
                     results.append(contact)
-                elif search_criteria == "Address" and search_query.lower() in contact[2].lower():
+                elif search_criteria is None or search_criteria == "Address" and search_query.lower() in contact[2].lower():
                     results.append(contact)
-                elif search_criteria == "Contact Number" and search_query.lower() in str(contact[3]):
+                elif search_criteria is None or search_criteria == "Contact Number" and search_query.lower() in str(contact[3]):
                     results.append(contact)
 
             if results:
-                search_results_window = tk.Toplevel(self.master)
-                search_results_window.title("Search Results")
-                search_results_window.geometry("600x200")
-                search_results_window.resizable(False, False)
-
-                tree = ttk.Treeview(search_results_window)
-                tree["columns"] = ("First Name", "Last Name", "Address", "Contact Number")
-                tree.heading("#0", text="ID")
-                tree.heading("First Name", text="First Name")
-                tree.heading("Last Name", text="Last Name")
-                tree.heading("Address", text="Address")
-                tree.heading("Contact Number", text="Contact Number")
-
-                # Configure column widths
-                tree.column("#0", width=50)
-                tree.column("First Name", width=100)
-                tree.column("Last Name", width=100)
-                tree.column("Address", width=200)
-                tree.column("Contact Number", width=100)
-
-                # Insert data into the treeview
-                for i, contact in enumerate(results):
-                    tree.insert("", tk.END, text=str(i + 1), values=(contact[0], contact[1], contact[2], contact[3]))
-
-                tree.pack()
+                self.show_search_results(results, search_window)
             else:
                 messagebox.showinfo("No Results", "No contacts match the search query.")
         else:
             messagebox.showinfo("Invalid Input", "Search query is required.")
+
+    def show_search_results(self, results, search_window):
+        result_frame = tk.Frame(search_window)
+        result_frame.pack(pady=10)
+
+        tree = ttk.Treeview(result_frame)
+        tree["columns"] = ("First Name", "Last Name", "Address", "Contact Number")
+        tree.heading("#0", text="ID")
+        tree.heading("First Name", text="First Name")
+        tree.heading("Last Name", text="Last Name")
+        tree.heading("Address", text="Address")
+        tree.heading("Contact Number", text="Contact Number")
+
+        # Configure column widths
+        tree.column("#0", width=50)
+        tree.column("First Name", width=100)
+        tree.column("Last Name", width=100)
+        tree.column("Address", width=200)
+        tree.column("Contact Number", width=100)
+
+        # Insert data into the treeview
+        for i, contact in enumerate(results):
+            tree.insert("", tk.END, text=str(i + 1), values=(contact[0], contact[1], contact[2], contact[3]))
+
+        tree.pack()
+
+        def view_selected_contact(event):
+            selected_item = tree.selection()[0]
+            selected_contact = results[int(tree.item(selected_item, "text")) - 1]
+            self.show_contact_details(selected_contact)
+
+        tree.bind("<Double-1>", view_selected_contact)
+
+    def show_contact_details(self, contact):
+        contact_window = tk.Toplevel(self.master)
+        contact_window.title("Contact Details")
+        contact_window.geometry("1000x600")
+        contact_window.resizable(False, False)
+
+        for i, field in enumerate(["First Name:", "Last Name:", "Address:", "Contact Number:"]):
+            label = tk.Label(contact_window, text=field)
+            label.grid(row=i, column=0)
+
+            value = tk.Label(contact_window, text=contact[i])
+            value.grid(row=i, column=1)
     
     def on_exit(self):
         # Close the entire application by destroying the root window
