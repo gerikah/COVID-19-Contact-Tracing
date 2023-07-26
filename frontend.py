@@ -135,7 +135,10 @@ class COVID_Contacts_Information:
                 messagebox.showerror("Error", f"Failed to add file: {str(e)}")
 
     def add_contact(self):
+        new_contact_added = False
+
         def save_contact():
+            nonlocal new_contact_added
             first_name = first_name_entry.get()
             last_name = last_name_entry.get()
             address = address_entry.get()
@@ -156,20 +159,15 @@ class COVID_Contacts_Information:
                         new_contact = [first_name, last_name, address, contact_number]
                         self.new_contacts.append(new_contact)  # Add the contact to the new contacts list
                         self.save_contacts()
+                        new_contact_added = True
                         messagebox.showinfo("Success", "Contact added successfully.")
                         window.destroy()
+                        self.show_menu()
+                        self.menu_window.deiconify()
                     except ValueError:
                         messagebox.showinfo("Invalid Input", "Contact number must be a valid number.")
             else:
                 messagebox.showinfo("Invalid Input", "All fields are required.")
-
-            if new_contact_added:
-                messagebox.showinfo("Success", "Contact added successfully.")
-                window.destroy()
-                self.menu_window.deiconify
-            new_contact_added = True
-
-        new_contact_added = False
 
         window = tk.Toplevel(self.menu_window)
         window.title("Add Contact")
@@ -197,12 +195,24 @@ class COVID_Contacts_Information:
         contact_number_label.pack()
         contact_number_entry.pack()
 
+        # Save button
         save_button = tk.Button(window, text="Save", command=save_contact)
         save_button.pack()
+        
+        self.menu_window.withdraw()# Hide the menu window while the "Add Contact" window is open
+        
+    def save_contacts(self):
+        try:
+            with open("covid_contacts_record.csv", mode="w", newline="") as file:
+                writer = csv.writer(file)
+                writer.writerows(self.all_contacts + self.new_contacts)  # Save all contacts together
 
-        # Hide the menu window while the "Add Contact" window is open
-        self.menu_window.withdraw()
-            
+            # After successfully saving the contacts, set new_contact_added to True
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to save address book: {str(e)}")
+        
+    
+
     def edit_contact(self):
         contact_id = simpledialog.askstring("Edit Contact", "Enter Contact ID:")
         if contact_id:
