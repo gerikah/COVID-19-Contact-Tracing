@@ -287,32 +287,47 @@ class COVID_Contacts_Information:
         cancel_button.pack(pady=5)
 
     def delete_contact(self):
-        contact_id = simpledialog.askstring("Delete Contact", "Enter Contact ID:")
-        if contact_id:
-            try:
-                contact_id = int(contact_id)  # Convert the contact ID to an integer
-                if 1 <= contact_id <= len(self.new_contacts):
-                    contact = self.new_contacts[contact_id - 1]  # Get the contact based on the ID
-                    self.new_contacts.remove(contact)  # Remove the contact from the new contacts list
-                    messagebox.showinfo("Success", "Contact deleted successfully.")
+        def delete_selected_contact():
+        # Get the selected contact from the listbox
+            selected_index = contact_listbox.curselection()
+            if selected_index:
+                selected_contact = self.new_contacts[selected_index[0]]
+                self.new_contacts.remove(selected_contact)  # Remove the contact from the new contacts list
+                self.save_contacts()  # Save the updated contacts
+                messagebox.showinfo("Success", "Contact deleted successfully.")
+                delete_window.destroy()
+                self.show_menu()
+                self.menu_window.deiconify()
+            else:
+                messagebox.showinfo("Invalid Input", "Please select a contact to delete.")
+        
+        # Create the "Delete Contact" window
+        delete_window = tk.Toplevel(self.menu_window)
+        delete_window.title("Delete Contact")
+        delete_window.geometry("1000x600")
+        delete_window.resizable(False, False)
 
-                    # Update and save the contacts to the CSV file
-                    with open("address_book.csv", "w", newline="") as file:
-                        writer = csv.writer(file)
-                        writer.writerows(self.new_contacts)
+        # Get all contacts' full names for the listbox
+        contact_names = [f"{contact[0]} {contact[1]}" for contact in self.new_contacts]
 
-                else:
-                    messagebox.showinfo("Invalid Input", "Invalid contact ID.")
-            except ValueError:
-                messagebox.showinfo("Invalid Input", "Contact ID must be a valid number.")
-        else:
-            messagebox.showinfo("Invalid Input", "Contact ID is required.")
+        # Listbox to display the contacts
+        contact_listbox = tk.Listbox(delete_window, width=30, height=10, selectmode=tk.SINGLE)
+        for name in contact_names:
+            contact_listbox.insert(tk.END, name)
+        contact_listbox.pack(pady=10)
+
+            # Button to select the contact to delete
+        delete_button = tk.Button(delete_window, text="Delete", command=delete_selected_contact)
+        delete_button.pack(pady=5)
+
+        # Hide the menu window while the "Delete Contact" window is open
+        self.menu_window.withdraw()
 
     def view_contacts(self):
         view_window = tk.Toplevel(self.master)
         view_window.title("View Contacts")
-        view_window.geometry("600x400")
-        view_window.resizable(True, True)
+        view_window.geometry("1000x600")
+        view_window.resizable(False, False)
 
         tree = ttk.Treeview(view_window)
         tree["columns"] = ("First Name", "Last Name", "Email Address", "Contact Number")
