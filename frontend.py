@@ -15,8 +15,6 @@ class COVID_Contacts_Information:
         self.master.title("SAFE TRACK")
         self.master.geometry("1000x600")
         self.load_contacts_from_file()
-#        self.menu_frame = tk.Frame(self.master, bg='#370607', width=1000, height=600)
-#        self.create_menu_content()
         self.menu_window = None
         
         # Background Image
@@ -91,15 +89,11 @@ class COVID_Contacts_Information:
 
     def show_menu(self):
         if self.menu_window is None or not self.menu_window.winfo_exists():
-
             # If the menu window doesn't exist or is already closed, create a new one
             self.menu_window = tk.Toplevel(self.master)
             self.menu_window.title("Menu")
             self.menu_window.geometry("1000x600")
             self.menu_window.protocol("WM_DELETE_WINDOW", self.close_menu_window)
-
-#            self.menu_frame = tk.Frame(self.menu_window, bg='#370607', width=1000, height=600)
-#            self.menu_frame.place(x=0, y=0)
 
             # Set the function to be called when the menu window is closed
             
@@ -109,6 +103,8 @@ class COVID_Contacts_Information:
         else:
             # If the menu window is already open, just bring it to the front
             self.menu_window.lift()
+
+        self.menu_window.deiconify()
 
     def create_menu_content(self):
         self.file_button = tk.Button(self.menu_window, width=20, text="Select File", background='white',font=("Times New Roman", 12, "bold"), command=self.add_existing_file)
@@ -430,8 +426,6 @@ class COVID_Contacts_Information:
     # Destroy the menu window and show the main window
     def close_menu_window(self):
         self.menu_window.destroy()
-        self.master.deiconify()
-
 
 if __name__ == "__main__":
     root = tk.Tk()
