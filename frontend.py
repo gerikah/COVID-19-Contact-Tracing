@@ -18,7 +18,7 @@ class COVID_Contacts_Information:
         self.menu_window = None
         
         # Background Image
-        bg_image = Image.open("background_image.jpg")
+        bg_image = Image.open("C:\\Users\\gerik\\OneDrive\\Documents\\GitHub\\COVID-19-Contact-Tracing\\background_image.jpg")
         bg_photo = ImageTk.PhotoImage(bg_image)
         bg_label = tk.Label(self.master, image=bg_photo)
         bg_label.image = bg_photo
@@ -56,8 +56,6 @@ class COVID_Contacts_Information:
         self.label_text = tk.Label(self.canvas, text="A protective tool that shields us and our loved ones \nby tracking potential COVID-19 virus exposures.", font=text_label_font_style, bg='#370607', fg="#B0FFFA")
         self.label_text.place(x=label_x, y=label_y, anchor=tk.CENTER)
 
-        self.menu_window = None  # Store the menu window reference
-
         # Start button
         button_x = rect_width / 2
         button_y = (label_y + rect_height) / 3.25
@@ -87,7 +85,6 @@ class COVID_Contacts_Information:
         self.master.withdraw()
         self.show_menu()
 
-
     def create_menu_content(self):
         self.file_button = tk.Button(self.menu_window, width=20, text="Select File", background='black',font=("Times New Roman", 12, "bold"), command=self.add_existing_file)
         self.file_button.pack(pady=10, padx=750)
@@ -105,6 +102,8 @@ class COVID_Contacts_Information:
         self.exit_button.pack(pady=10, padx=750)
 
     def show_menu(self):
+        self.create_menu_content()
+        
         if self.menu_window is None or not self.menu_window.winfo_exists():
             # If the menu window doesn't exist or is already closed, create a new one
             self.menu_window = tk.Toplevel(self.master)
@@ -115,7 +114,7 @@ class COVID_Contacts_Information:
             # Set the function to be called when the menu window is closed
             
             # Content for menu window
-            self.create_menu_content()
+            
             
         else:
             # If the menu window is already open, just bring it to the front
