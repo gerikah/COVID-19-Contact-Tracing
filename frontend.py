@@ -10,7 +10,7 @@ import csv
 class COVID_Contacts_Information:
     def __init__(self, master):
         self.all_contacts = []
-        self.new_contacrs = []
+        self.new_contacts = []
         self.master = master
         self.master.title("SAFE TRACK")
         self.master.geometry("1000x600")
@@ -107,21 +107,27 @@ class COVID_Contacts_Information:
 
     def create_menu_content(self):
         self.file_button = tk.Button(self.menu_frame, width=20, text="Select File", background='white',font=("Times New Roman", 12, "bold"), command=self.load_contacts_from_file)
-        self.file_button.pack(pady=10)
+        self.file_button.pack(pady=10, padx=750)
         self.add_button = tk.Button(self.menu_frame, width=20, text="Add Contact", background='white', font=("Times New Roman", 12, "bold"), command=self.add_contact)
-        self.add_button.pack(pady=15)
+        self.add_button.pack(pady=15, padx=750)
         self.edit_button = tk.Button(self.menu_frame, width=20, text="Edit Contact", background='white', font=("Times New Roman", 12, "bold"), command=self.edit_contact)
-        self.edit_button.pack(pady=10)
+        self.edit_button.pack(pady=10, padx=750)
         self.delete_button = tk.Button(self.menu_frame, width=20, text="Delete Contact", background='white', font=("Times New Roman", 12, "bold"), command=self.delete_contact)
-        self.delete_button.pack(pady=15)
+        self.delete_button.pack(pady=15, padx=750)
         self.view_button = tk.Button(self.menu_frame, width=20, text="View Contacts", background='white', font=("Times New Roman", 12, "bold"), command=self.view_contacts)
-        self.view_button.pack(pady=10)
+        self.view_button.pack(pady=10, padx=750)
         self.search_button = tk.Button(self.menu_frame, width=20, text="Search Address Book", background='white', font=("Times New Roman", 12, "bold"), command=self.search_address_book)
-        self.search_button.pack(pady=15)
+        self.search_button.pack(pady=15, padx=750)
         self.exit_button = tk.Button(self.menu_frame, width=10, text="Exit", background='white', font=("Times New Roman", 12, "bold"), command=self.on_exit)
-        self.exit_button.pack(pady=10)
-    
+        self.exit_button.pack(pady=10, padx=750)
 
+    # The functions for the new buttons
+    def button1_function(self):
+        messagebox.showinfo("Button 1 Clicked", "Button 1 was clicked!")
+
+    def button2_function(self):
+        messagebox.showinfo("Button 2 Clicked", "Button 2 was clicked!")
+        
     def add_existing_file(self):
         file_path = filedialog.askopenfilename(title="Select Existing File", filetypes=[("CSV Files", "*.csv"),("TXT Files", "*.txt"),("PDF Files","*.pdf")])
         if file_path:
