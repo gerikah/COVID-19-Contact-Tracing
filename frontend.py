@@ -18,7 +18,7 @@ class COVID_Contacts_Information:
         self.menu_window = None
         
         # Background Image
-        bg_image = Image.open("C:\\Users\\gerik\\OneDrive\\Documents\\GitHub\\COVID-19-Contact-Tracing\\background_image.jpg")
+        bg_image = Image.open("C:\\Users\\gerik\\OneDrive\\Documents\\GitHub\\COVID-19-Contact-Tracing\\Main Window Image - Virus.jpg")
         bg_photo = ImageTk.PhotoImage(bg_image)
         bg_label = tk.Label(self.master, image=bg_photo)
         bg_label.image = bg_photo
@@ -88,18 +88,18 @@ class COVID_Contacts_Information:
         self.show_menu()
 
     def create_menu_content(self):
-        self.add_button = tk.Button(self.menu_window, width=20, text="Add Contact", background='black', fg="white", font=("Times New Roman", 12, "bold"), command=self.add_contact)
-        self.add_button.pack(pady=15, padx=50)
-        self.edit_button = tk.Button(self.menu_window, width=20, text="Edit Contact", background='black', fg="white", font=("Times New Roman", 12, "bold"), command=self.edit_contact)
-        self.edit_button.pack(pady=10, padx=50)
-        self.delete_button = tk.Button(self.menu_window, width=20, text="Delete Contact", background='black', fg="white", font=("Times New Roman", 12, "bold"), command=self.delete_contact)
-        self.delete_button.pack(pady=15, padx=50)
-        self.view_button = tk.Button(self.menu_window, width=20, text="View Contacts", background='black',fg="white", font=("Times New Roman", 12, "bold"), command=self.view_contacts)
-        self.view_button.pack(pady=10, padx=50)
-        self.search_button = tk.Button(self.menu_window, width=20, text="Search Address Book", background='black', fg="white", font=("Times New Roman", 12, "bold"), command=self.search_address_book)
-        self.search_button.pack(pady=15, padx=50)
-        self.exit_button = tk.Button(self.menu_window, width=10, text="Exit", background='black', fg="white", font=("Times New Roman", 12, "bold"), command=self.on_exit)
-        self.exit_button.pack(pady=10, padx=50)
+        self.add_button = tk.Button(self.menu_window, width=20, text="Add Contact", background='#370607', fg="white", font=("Poppins", 12, "bold"), command=self.add_contact)
+        self.add_button.place(x=850, y=80, anchor=tk.NE)
+        self.edit_button = tk.Button(self.menu_window, width=20, text="Edit Contact", background='#370607', fg="white", font=("Poppins", 12, "bold"), command=self.edit_contact)
+        self.edit_button.place(x=850, y=160, anchor=tk.NE)
+        self.delete_button = tk.Button(self.menu_window, width=20, text="Delete Contact", background='#370607', fg="white", font=("Poppins", 12, "bold"), command=self.delete_contact)
+        self.delete_button.place(x=850, y=240, anchor=tk.NE)
+        self.view_button = tk.Button(self.menu_window, width=20, text="View Contacts", background='#370607',fg="white", font=("Poppins", 12, "bold"), command=self.view_contacts)
+        self.view_button.place(x=850, y=320, anchor=tk.NE)
+        self.search_button = tk.Button(self.menu_window, width=20, text="Search Contact", background='#370607', fg="white", font=("Poppins", 12, "bold"), command=self.search_address_book)
+        self.search_button.place(x=850, y=400, anchor=tk.NE)
+        self.exit_button = tk.Button(self.menu_window, width=10, text="Exit", background='#370607', fg="white", font=("Poppins", 12, "bold"), command=self.on_exit)
+        self.exit_button.place(x=805, y=480, anchor=tk.NE)
 
     def show_menu(self):
         
@@ -109,6 +109,24 @@ class COVID_Contacts_Information:
             self.menu_window.title("Menu")
             self.menu_window.geometry("1000x600")
             self.menu_window.protocol("WM_DELETE_WINDOW", self.close_menu_window)
+
+            self.canvas = tk.Canvas(self.menu_window, width=1000, height=600)
+            self.canvas.pack()
+
+            # Add a rectangle on the left side of the canvas
+            self.canvas.create_rectangle(0, 0, 500, 600, fill="#370607")
+
+            # Load the image
+            bg_image = Image.open("C:\\Users\\gerik\\OneDrive\\Documents\\GitHub\\COVID-19-Contact-Tracing\\Menu Window Image - Safe Trace.png")
+            bg_image = bg_image.resize((500, 600))
+            bg_photo = ImageTk.PhotoImage(bg_image)
+
+           # Create a label with the image
+            bg_label = tk.Label(self.canvas, image=bg_photo)
+            bg_label.image = bg_photo
+
+            # Place the label inside the canvas
+            self.canvas.create_window(250, 300, window=bg_label)
 
             self.create_menu_content() # Content for menu window
             
@@ -356,7 +374,7 @@ class COVID_Contacts_Information:
             view_window.destroy()
             self.show_menu()
             self.menu_window.deiconify
-            
+
         view_window.protocol("WM_DELETE_WINDOW", close_view_window)
         
     def search_address_book(self):
