@@ -86,23 +86,22 @@ class COVID_Contacts_Information:
         self.show_menu()
 
     def create_menu_content(self):
-        self.file_button = tk.Button(self.menu_window, width=20, text="Select File", background='black',font=("Times New Roman", 12, "bold"), command=self.add_existing_file)
-        self.file_button.pack(pady=10, padx=750)
-        self.add_button = tk.Button(self.menu_window, width=20, text="Add Contact", background='black', font=("Times New Roman", 12, "bold"), command=self.add_contact)
-        self.add_button.pack(pady=15, padx=750)
-        self.edit_button = tk.Button(self.menu_window, width=20, text="Edit Contact", background='black', font=("Times New Roman", 12, "bold"), command=self.edit_contact)
-        self.edit_button.pack(pady=10, padx=750)
-        self.delete_button = tk.Button(self.menu_window, width=20, text="Delete Contact", background='black', font=("Times New Roman", 12, "bold"), command=self.delete_contact)
-        self.delete_button.pack(pady=15, padx=750)
-        self.view_button = tk.Button(self.menu_window, width=20, text="View Contacts", background='black', font=("Times New Roman", 12, "bold"), command=self.view_contacts)
-        self.view_button.pack(pady=10, padx=750)
-        self.search_button = tk.Button(self.menu_window, width=20, text="Search Address Book", background='black', font=("Times New Roman", 12, "bold"), command=self.search_address_book)
-        self.search_button.pack(pady=15, padx=750)
-        self.exit_button = tk.Button(self.menu_window, width=10, text="Exit", background='black', font=("Times New Roman", 12, "bold"), command=self.on_exit)
-        self.exit_button.pack(pady=10, padx=750)
+        self.file_button = tk.Button(self.menu_window, width=20, text="Select File", background='black', fg="white",font=("Times New Roman", 12, "bold"), command=self.add_existing_file)
+        self.file_button.pack(pady=10, padx=50)
+        self.add_button = tk.Button(self.menu_window, width=20, text="Add Contact", background='black', fg="white", font=("Times New Roman", 12, "bold"), command=self.add_contact)
+        self.add_button.pack(pady=15, padx=50)
+        self.edit_button = tk.Button(self.menu_window, width=20, text="Edit Contact", background='black', fg="white", font=("Times New Roman", 12, "bold"), command=self.edit_contact)
+        self.edit_button.pack(pady=10, padx=50)
+        self.delete_button = tk.Button(self.menu_window, width=20, text="Delete Contact", background='black', fg="white", font=("Times New Roman", 12, "bold"), command=self.delete_contact)
+        self.delete_button.pack(pady=15, padx=50)
+        self.view_button = tk.Button(self.menu_window, width=20, text="View Contacts", background='black',fg="white", font=("Times New Roman", 12, "bold"), command=self.view_contacts)
+        self.view_button.pack(pady=10, padx=50)
+        self.search_button = tk.Button(self.menu_window, width=20, text="Search Address Book", background='black', fg="white", font=("Times New Roman", 12, "bold"), command=self.search_address_book)
+        self.search_button.pack(pady=15, padx=50)
+        self.exit_button = tk.Button(self.menu_window, width=10, text="Exit", background='black', fg="white", font=("Times New Roman", 12, "bold"), command=self.on_exit)
+        self.exit_button.pack(pady=10, padx=50)
 
     def show_menu(self):
-        self.create_menu_content()
         
         if self.menu_window is None or not self.menu_window.winfo_exists():
             # If the menu window doesn't exist or is already closed, create a new one
@@ -111,9 +110,7 @@ class COVID_Contacts_Information:
             self.menu_window.geometry("1000x600")
             self.menu_window.protocol("WM_DELETE_WINDOW", self.close_menu_window)
 
-            # Set the function to be called when the menu window is closed
-            
-            # Content for menu window
+            self.create_menu_content() # Content for menu window
             
             
         else:
