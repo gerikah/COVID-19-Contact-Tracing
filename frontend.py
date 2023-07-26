@@ -68,13 +68,15 @@ class COVID_Contacts_Information:
                 reader = csv.reader(file) # set read mode using csv reader
                 self.all_contacts = list(reader) # save sa all_contacts
         except FileNotFoundError: # exception handling if file is not found
-            pass
+            with open("covid_contacts_record.csv", mode="w", newline="") as file:
+                writer = csv.writer(file)
+                writer.writerows([]) 
         except Exception as e: # error message
-            raise Exception(f"Failed to load address book: {str(e)}")
+            raise Exception(f"Failed to load contact book: {str(e)}")
     
     def save_contacts(self):
         try:
-            with open("address_book.csv", mode="w", newline="") as file:
+            with open("covid_contacts_record.csv", mode="w", newline="") as file:
                 writer = csv.writer(file)
                 writer.writerows(self.all_contacts + self.new_contacts)  # Save all contacts together
         except Exception as e:
@@ -86,8 +88,6 @@ class COVID_Contacts_Information:
         self.show_menu()
 
     def create_menu_content(self):
-        self.file_button = tk.Button(self.menu_window, width=20, text="Select File", background='black', fg="white",font=("Times New Roman", 12, "bold"), command=self.add_existing_file)
-        self.file_button.pack(pady=10, padx=50)
         self.add_button = tk.Button(self.menu_window, width=20, text="Add Contact", background='black', fg="white", font=("Times New Roman", 12, "bold"), command=self.add_contact)
         self.add_button.pack(pady=15, padx=50)
         self.edit_button = tk.Button(self.menu_window, width=20, text="Edit Contact", background='black', fg="white", font=("Times New Roman", 12, "bold"), command=self.edit_contact)
@@ -135,32 +135,6 @@ class COVID_Contacts_Information:
                 messagebox.showerror("Error", f"Failed to add file: {str(e)}")
 
     def add_contact(self):
-        window = tk.Toplevel(self.master)
-        window.title("Add Contact")
-        window.geometry("300x200")
-        window.resizable(False, False)
-
-        # Entry fields
-        first_name_label = tk.Label(window, text="First Name:")
-        first_name_entry = tk.Entry(window)
-        first_name_label.pack()
-        first_name_entry.pack()
-
-        last_name_label = tk.Label(window, text="Last Name:")
-        last_name_entry = tk.Entry(window)
-        last_name_label.pack()
-        last_name_entry.pack()
-
-        address_label = tk.Label(window, text="Email Address:")
-        address_entry = tk.Entry(window)
-        address_label.pack()
-        address_entry.pack()
-
-        contact_number_label = tk.Label(window, text="Contact Number:")
-        contact_number_entry = tk.Entry(window)
-        contact_number_label.pack()
-        contact_number_entry.pack()
-
         def save_contact():
             first_name = first_name_entry.get()
             last_name = last_name_entry.get()
@@ -189,8 +163,45 @@ class COVID_Contacts_Information:
             else:
                 messagebox.showinfo("Invalid Input", "All fields are required.")
 
+            if new_contact_added:
+                messagebox.showinfo("Success", "Contact added successfully.")
+                window.destroy()
+                self.menu_window.deiconify
+            new_contact_added = True
+
+        new_contact_added = False
+
+        window = tk.Toplevel(self.menu_window)
+        window.title("Add Contact")
+        window.geometry("1000x600")
+        window.resizable(False,False)
+
+        # Entry fields
+        first_name_label = tk.Label(window, text="First Name:")
+        first_name_entry = tk.Entry(window)
+        first_name_label.pack()
+        first_name_entry.pack()
+
+        last_name_label = tk.Label(window, text="Last Name:")
+        last_name_entry = tk.Entry(window)
+        last_name_label.pack()
+        last_name_entry.pack()
+
+        address_label = tk.Label(window, text="Email Address:")
+        address_entry = tk.Entry(window)
+        address_label.pack()
+        address_entry.pack()
+
+        contact_number_label = tk.Label(window, text="Contact Number:")
+        contact_number_entry = tk.Entry(window)
+        contact_number_label.pack()
+        contact_number_entry.pack()
+
         save_button = tk.Button(window, text="Save", command=save_contact)
         save_button.pack()
+
+        # Hide the menu window while the "Add Contact" window is open
+        self.menu_window.withdraw()
             
     def edit_contact(self):
         contact_id = simpledialog.askstring("Edit Contact", "Enter Contact ID:")
