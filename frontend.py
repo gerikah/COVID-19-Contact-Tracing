@@ -15,8 +15,9 @@ class COVID_Contacts_Information:
         self.master.title("SAFE TRACK")
         self.master.geometry("1000x600")
         self.load_contacts_from_file()
-        self.menu_frame = tk.Frame(self.master, bg='#370607', width=1000, height=600)
-        self.create_menu_content()
+#        self.menu_frame = tk.Frame(self.master, bg='#370607', width=1000, height=600)
+#        self.create_menu_content()
+        self.menu_window = None
         
         # Background Image
         bg_image = Image.open("background_image.jpg")
@@ -57,12 +58,12 @@ class COVID_Contacts_Information:
         self.label_text = tk.Label(self.canvas, text="A protective tool that shields us and our loved ones \nby tracking potential COVID-19 virus exposures.", font=text_label_font_style, bg='#370607', fg="#B0FFFA")
         self.label_text.place(x=label_x, y=label_y, anchor=tk.CENTER)
 
-        self.menu_window = None  # Store the menu window reference
+#        self.menu_window = None  # Store the menu window reference
 
         # Start button
         button_x = rect_width / 2
         button_y = (label_y + rect_height) / 3.25
-        self.start_button = tk.Button(self.canvas, text="START", font=("Poppins", 30), command=self.show_menu, bg="#006B65", fg="#370607")
+        self.start_button = tk.Button(self.canvas, text="START", font=("Poppins", 30), command=self.on_start_button_click, bg="#006B65", fg="#370607")
         self.start_button.place(x=button_x, y=button_y, anchor=tk.CENTER)
     
     def load_contacts_from_file(self): # to load the contacts saved in csv
@@ -83,51 +84,48 @@ class COVID_Contacts_Information:
         except Exception as e:
             messagebox.showerror("Error", f"Failed to save address book: {str(e)}")
 
+    def on_start_button_click(self):
+        # Destroy the main window
+        self.master.withdraw()
+        self.show_menu()
+
     def show_menu(self):
         if self.menu_window is None or not self.menu_window.winfo_exists():
-        # If the menu window doesn't exist or is already closed, create a new one
+
+            # If the menu window doesn't exist or is already closed, create a new one
             self.menu_window = tk.Toplevel(self.master)
             self.menu_window.title("Menu")
             self.menu_window.geometry("1000x600")
-            self.menu_frame = tk.Frame(self.menu_window, bg='#370607', width=1000, height=600)
-            self.menu_frame.place(x=0, y=0)
-
-            # Set the function to be called when the menu window is closed
             self.menu_window.protocol("WM_DELETE_WINDOW", self.close_menu_window)
 
+#            self.menu_frame = tk.Frame(self.menu_window, bg='#370607', width=1000, height=600)
+#            self.menu_frame.place(x=0, y=0)
+
+            # Set the function to be called when the menu window is closed
+            
             # Content for menu window
             self.create_menu_content()
-            
-            # Hide the canvas
-            self.canvas.place_forget() 
             
         else:
             # If the menu window is already open, just bring it to the front
             self.menu_window.lift()
 
     def create_menu_content(self):
-        self.file_button = tk.Button(self.menu_frame, width=20, text="Select File", background='white',font=("Times New Roman", 12, "bold"), command=self.load_contacts_from_file)
+        self.file_button = tk.Button(self.menu_window, width=20, text="Select File", background='white',font=("Times New Roman", 12, "bold"), command=self.add_existing_file)
         self.file_button.pack(pady=10, padx=750)
-        self.add_button = tk.Button(self.menu_frame, width=20, text="Add Contact", background='white', font=("Times New Roman", 12, "bold"), command=self.add_contact)
+        self.add_button = tk.Button(self.menu_window, width=20, text="Add Contact", background='white', font=("Times New Roman", 12, "bold"), command=self.add_contact)
         self.add_button.pack(pady=15, padx=750)
-        self.edit_button = tk.Button(self.menu_frame, width=20, text="Edit Contact", background='white', font=("Times New Roman", 12, "bold"), command=self.edit_contact)
+        self.edit_button = tk.Button(self.menu_window, width=20, text="Edit Contact", background='white', font=("Times New Roman", 12, "bold"), command=self.edit_contact)
         self.edit_button.pack(pady=10, padx=750)
-        self.delete_button = tk.Button(self.menu_frame, width=20, text="Delete Contact", background='white', font=("Times New Roman", 12, "bold"), command=self.delete_contact)
+        self.delete_button = tk.Button(self.menu_window, width=20, text="Delete Contact", background='white', font=("Times New Roman", 12, "bold"), command=self.delete_contact)
         self.delete_button.pack(pady=15, padx=750)
-        self.view_button = tk.Button(self.menu_frame, width=20, text="View Contacts", background='white', font=("Times New Roman", 12, "bold"), command=self.view_contacts)
+        self.view_button = tk.Button(self.menu_window, width=20, text="View Contacts", background='white', font=("Times New Roman", 12, "bold"), command=self.view_contacts)
         self.view_button.pack(pady=10, padx=750)
-        self.search_button = tk.Button(self.menu_frame, width=20, text="Search Address Book", background='white', font=("Times New Roman", 12, "bold"), command=self.search_address_book)
+        self.search_button = tk.Button(self.menu_window, width=20, text="Search Address Book", background='white', font=("Times New Roman", 12, "bold"), command=self.search_address_book)
         self.search_button.pack(pady=15, padx=750)
-        self.exit_button = tk.Button(self.menu_frame, width=10, text="Exit", background='white', font=("Times New Roman", 12, "bold"), command=self.on_exit)
+        self.exit_button = tk.Button(self.menu_window, width=10, text="Exit", background='white', font=("Times New Roman", 12, "bold"), command=self.on_exit)
         self.exit_button.pack(pady=10, padx=750)
 
-    # The functions for the new buttons
-    def button1_function(self):
-        messagebox.showinfo("Button 1 Clicked", "Button 1 was clicked!")
-
-    def button2_function(self):
-        messagebox.showinfo("Button 2 Clicked", "Button 2 was clicked!")
-        
     def add_existing_file(self):
         file_path = filedialog.askopenfilename(title="Select Existing File", filetypes=[("CSV Files", "*.csv"),("TXT Files", "*.txt"),("PDF Files","*.pdf")])
         if file_path:
@@ -190,6 +188,7 @@ class COVID_Contacts_Information:
                         contact_number = int(contact_number)  # Convert the contact number to an integer
                         new_contact = [first_name, last_name, address, contact_number]
                         self.new_contacts.append(new_contact)  # Add the contact to the new contacts list
+                        self.save_contacts()
                         messagebox.showinfo("Success", "Contact added successfully.")
                         window.destroy()
                     except ValueError:
@@ -430,9 +429,11 @@ class COVID_Contacts_Information:
 
     # Destroy the menu window and show the main window
     def close_menu_window(self):
-        self.menu_frame.place_forget()
-        self.canvas.place(x=0, y=0)
+        self.menu_window.destroy()
+        self.master.deiconify()
 
-root = tk.Tk()
-gui = COVID_Contacts_Information(root)
-root.mainloop()
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    gui = COVID_Contacts_Information(root)
+    root.mainloop()
