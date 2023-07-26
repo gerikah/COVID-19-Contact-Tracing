@@ -95,6 +95,9 @@ class COVID_Contacts_Information:
             # Set the function to be called when the menu window is closed
             self.menu_window.protocol("WM_DELETE_WINDOW", self.close_menu_window)
 
+            # Content for menu window
+            self.create_menu_content()
+            
             # Hide the canvas
             self.canvas.place_forget() 
             
@@ -118,6 +121,7 @@ class COVID_Contacts_Information:
         self.exit_button = tk.Button(self.menu_frame, width=10, text="Exit", background='white', font=("Times New Roman", 12, "bold"), command=self.on_exit)
         self.exit_button.pack(pady=10)
     
+
     def add_existing_file(self):
         file_path = filedialog.askopenfilename(title="Select Existing File", filetypes=[("CSV Files", "*.csv"),("TXT Files", "*.txt"),("PDF Files","*.pdf")])
         if file_path:
