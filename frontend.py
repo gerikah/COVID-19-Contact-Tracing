@@ -7,6 +7,7 @@ import csv
 class COVID_Contacts_Information_GUI:
     def __init__(self, master):
         self.all_contacts = []
+        self.new_contacrs = []
         self.master = master
         self.master.title("SAFE TRACK")
         self.master.geometry("1000x600")
@@ -110,7 +111,7 @@ class COVID_Contacts_Information_GUI:
             self.menu_window.protocol("WM_DELETE_WINDOW", self.close_menu_window)
 
             # Hide the canvas
-            self.canvas.place_forget()
+            self.canvas.place_forget() 
             
         else:
             # If the menu window is already open, just bring it to the front
