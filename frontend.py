@@ -324,6 +324,8 @@ class COVID_Contacts_Information:
         self.menu_window.withdraw()
 
     def view_contacts(self):
+        self.menu_window.withdraw()
+
         view_window = tk.Toplevel(self.master)
         view_window.title("View Contacts")
         view_window.geometry("1000x600")
@@ -349,6 +351,13 @@ class COVID_Contacts_Information:
             tree.insert("", tk.END, text=str(i + 1), values=(contact[0], contact[1], contact[2], contact[3]))
 
         tree.pack()
+
+        def close_view_window():
+            view_window.destroy()
+            self.show_menu()
+            self.menu_window.deiconify
+            
+        view_window.protocol("WM_DELETE_WINDOW", close_view_window)
         
     def search_address_book(self):
         search_window = tk.Toplevel(self.master)
