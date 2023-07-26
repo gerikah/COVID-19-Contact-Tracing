@@ -1,10 +1,10 @@
 import tkinter as tk
-from tkinter import messagebox, simpledialog
+from tkinter import messagebox
 import tkinter.font as tkfont
 from PIL import Image, ImageTk
 import csv
 
-class COVID_Contacts_Information_GUI:
+class COVID_Contacts_Information:
     def __init__(self, master):
         self.all_contacts = []
         self.new_contacrs = []
@@ -12,6 +12,9 @@ class COVID_Contacts_Information_GUI:
         self.master.title("SAFE TRACK")
         self.master.geometry("1000x600")
         self.load_contacts_from_file()
+
+        self.menu_frame = tk.Frame(self.master, bg='#370607', width=1000, height=600)
+        self.create_menu_content()
 
     def load_contacts_from_file(self): # to load the contacts saved in csv
         try:
@@ -70,6 +73,7 @@ class COVID_Contacts_Information_GUI:
         self.start_button = tk.Button(self.canvas, text="START", font=("Poppins", 30), command=self.show_menu, bg="#006B65", fg="#370607")
         self.start_button.place(x=button_x, y=button_y, anchor=tk.CENTER)
     
+
     def show_menu(self):
         if self.menu_window is None or not self.menu_window.winfo_exists():
         # If the menu window doesn't exist or is already closed, create a new one
@@ -95,10 +99,9 @@ class COVID_Contacts_Information_GUI:
     
     # Destroy the menu window and show the main window
     def close_menu_window(self):
-        self.menu_window.destroy()
-        self.menu_window = None
-        self.master.deiconify()
+        self.menu_frame.place_forget()
+        self.canvas.place(x=0, y=0)
 
 root = tk.Tk()
-gui = COVID_Contacts_Information_GUI(root)
+gui = COVID_Contacts_Information(root)
 root.mainloop()
