@@ -56,7 +56,7 @@ class COVID_Contacts_Information:
         self.label_text = tk.Label(self.canvas, text="A protective tool that shields us and our loved ones \nby tracking potential COVID-19 virus exposures.", font=text_label_font_style, bg='#370607', fg="#B0FFFA")
         self.label_text.place(x=label_x, y=label_y, anchor=tk.CENTER)
 
-#        self.menu_window = None  # Store the menu window reference
+        self.menu_window = None  # Store the menu window reference
 
         # Start button
         button_x = rect_width / 2
@@ -87,6 +87,23 @@ class COVID_Contacts_Information:
         self.master.withdraw()
         self.show_menu()
 
+
+    def create_menu_content(self):
+        self.file_button = tk.Button(self.menu_window, width=20, text="Select File", background='black',font=("Times New Roman", 12, "bold"), command=self.add_existing_file)
+        self.file_button.pack(pady=10, padx=750)
+        self.add_button = tk.Button(self.menu_window, width=20, text="Add Contact", background='black', font=("Times New Roman", 12, "bold"), command=self.add_contact)
+        self.add_button.pack(pady=15, padx=750)
+        self.edit_button = tk.Button(self.menu_window, width=20, text="Edit Contact", background='black', font=("Times New Roman", 12, "bold"), command=self.edit_contact)
+        self.edit_button.pack(pady=10, padx=750)
+        self.delete_button = tk.Button(self.menu_window, width=20, text="Delete Contact", background='black', font=("Times New Roman", 12, "bold"), command=self.delete_contact)
+        self.delete_button.pack(pady=15, padx=750)
+        self.view_button = tk.Button(self.menu_window, width=20, text="View Contacts", background='black', font=("Times New Roman", 12, "bold"), command=self.view_contacts)
+        self.view_button.pack(pady=10, padx=750)
+        self.search_button = tk.Button(self.menu_window, width=20, text="Search Address Book", background='black', font=("Times New Roman", 12, "bold"), command=self.search_address_book)
+        self.search_button.pack(pady=15, padx=750)
+        self.exit_button = tk.Button(self.menu_window, width=10, text="Exit", background='black', font=("Times New Roman", 12, "bold"), command=self.on_exit)
+        self.exit_button.pack(pady=10, padx=750)
+
     def show_menu(self):
         if self.menu_window is None or not self.menu_window.winfo_exists():
             # If the menu window doesn't exist or is already closed, create a new one
@@ -105,23 +122,7 @@ class COVID_Contacts_Information:
             self.menu_window.lift()
 
         self.menu_window.deiconify()
-
-    def create_menu_content(self):
-        self.file_button = tk.Button(self.menu_window, width=20, text="Select File", background='white',font=("Times New Roman", 12, "bold"), command=self.add_existing_file)
-        self.file_button.pack(pady=10, padx=750)
-        self.add_button = tk.Button(self.menu_window, width=20, text="Add Contact", background='white', font=("Times New Roman", 12, "bold"), command=self.add_contact)
-        self.add_button.pack(pady=15, padx=750)
-        self.edit_button = tk.Button(self.menu_window, width=20, text="Edit Contact", background='white', font=("Times New Roman", 12, "bold"), command=self.edit_contact)
-        self.edit_button.pack(pady=10, padx=750)
-        self.delete_button = tk.Button(self.menu_window, width=20, text="Delete Contact", background='white', font=("Times New Roman", 12, "bold"), command=self.delete_contact)
-        self.delete_button.pack(pady=15, padx=750)
-        self.view_button = tk.Button(self.menu_window, width=20, text="View Contacts", background='white', font=("Times New Roman", 12, "bold"), command=self.view_contacts)
-        self.view_button.pack(pady=10, padx=750)
-        self.search_button = tk.Button(self.menu_window, width=20, text="Search Address Book", background='white', font=("Times New Roman", 12, "bold"), command=self.search_address_book)
-        self.search_button.pack(pady=15, padx=750)
-        self.exit_button = tk.Button(self.menu_window, width=10, text="Exit", background='white', font=("Times New Roman", 12, "bold"), command=self.on_exit)
-        self.exit_button.pack(pady=10, padx=750)
-
+        
     def add_existing_file(self):
         file_path = filedialog.askopenfilename(title="Select Existing File", filetypes=[("CSV Files", "*.csv"),("TXT Files", "*.txt"),("PDF Files","*.pdf")])
         if file_path:
