@@ -1,7 +1,5 @@
 import tkinter as tk
 from tkinter import messagebox, simpledialog
-from tkinter import ttk
-from tkinter import filedialog
 import tkinter.font as tkfont
 from PIL import Image, ImageTk
 import csv
@@ -12,8 +10,9 @@ class COVID_Contacts_Information_GUI:
         self.master = master
         self.master.title("SAFE TRACK")
         self.master.geometry("1000x600")
+        self.load_contacts_from_file()
 
-    def contacts(self): # to load the contacts saved in csv
+    def load_contacts_from_file(self): # to load the contacts saved in csv
         try:
             with open("covid_contacts_record.csv", mode="r") as file:
                 reader = csv.reader(file) # set read mode using csv reader
@@ -69,17 +68,17 @@ class COVID_Contacts_Information_GUI:
         button_y = (label_y + rect_height) / 3.25
         self.start_button = tk.Button(self.canvas, text="START", font=("Poppins", 30), command=self.show_menu, bg="#006B65", fg="#370607")
         self.start_button.place(x=button_x, y=button_y, anchor=tk.CENTER)
-
-        # Contact Book
-        self.contact_book = COVID_Contacts_Informations()
     
-    # New window when start button has been clicked
     def show_menu(self):
         if self.menu_window is None or not self.menu_window.winfo_exists():
         # If the menu window doesn't exist or is already closed, create a new one
-            self.menu_window = tk.Toplevel(self.master)
-            self.menu_window.title("SAFE TRACK")
-            self.menu_window.geometry("1000x600")
+            self.menu_frame = tk.Frame(self.master, bg='#370607', width=1000, height=600)
+            self.menu_frame.place(x=0, y=0)
+            canvas_width = self.menu_frame.winfo_reqwidth()
+            canvas_height = self.menu_frame.winfo_reqheight()
+            rect_width = canvas_width
+            rect_height = canvas_height
+            self.menu_frame.create_rectangle(0, 0, rect_width, rect_height, fill='#370607')
 
             # Background Image
             bg_image = Image.open("background_image.jpg")
@@ -115,8 +114,8 @@ class COVID_Contacts_Information_GUI:
             # Set the function to be called when the menu window is closed
             self.menu_window.protocol("WM_DELETE_WINDOW", self.close_menu_window)
 
-            # Hide the main window
-            self.master.withdraw()
+            # Hide the canvas
+            self.canvas.place_forget()
             
         else:
             # If the menu window is already open, just bring it to the front
@@ -153,7 +152,9 @@ class COVID_Contacts_Information_GUI:
         try:
             with open("COVID-19_contacts.csv", mode="w", newline="") as file:
                 writer = csv.writer(file)
-                writer.writerows(self.all_contacts + self.new_contacts)
+                header_row = ["First Name", "Last Name", "Address", "Contact Number", "Date"]
+                writer.writerow(header_row)
+                writer.writerows(self.all_contacts)
         except Exception as e:
             raise Exception(f"Failed to save address book: {str(e)}")
         
@@ -211,10 +212,6 @@ class COVID_Contacts_Information_GUI:
             elif search_criteria == "Date" and search_query.lower() in contact[4].lower():
                 results.append(contact)
         return results
-
-    
-
-
 
 root = tk.Tk()
 gui = COVID_Contacts_Information_GUI(root)
