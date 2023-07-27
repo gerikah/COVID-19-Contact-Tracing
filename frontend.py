@@ -319,9 +319,10 @@ class COVID_Contacts_Information:
         edit_window.geometry("1000x600")
         edit_window.resizable(False, False)
 
+        # Create a frame to organize the layout of the listbox and the "Select" button
         frame = tk.Frame(edit_window)
         frame.pack(pady=10)
-        
+
         # Get all contacts' full names for the listbox
         contact_names = [f"{contact[0]} {contact[1]}" for contact in self.new_contacts]
 
@@ -331,14 +332,21 @@ class COVID_Contacts_Information:
             contact_listbox.insert(tk.END, name)
         contact_listbox.pack(pady=10)
 
+        buttons_frame = tk.Frame(edit_window)
+        buttons_frame.pack(pady=5)
+
         # Button to select the contact to edit
-        select_button = tk.Button(edit_window, text="Select", command=edit_selected_contact)
-        select_button.pack(pady=5)
+        select_button = tk.Button(frame, text="Select", command=edit_selected_contact)
+        select_button.pack(side=tk.LEFT, pady=5)
+
+        # Cancel button
+        cancel_button = tk.Button(frame, text="Cancel", command=cancel_edit)
+        cancel_button.pack(side=tk.LEFT, pady=5)
 
         # Hide the menu window while the "Edit Contact" window is open
         self.menu_window.withdraw()
 
-    def edit_selected_contact_fields(self, contact):
+    def edit_selected_contact_fields(self, contact, menu_window):
         def save_edited_contact(contact, fields):
             for option in edit_options:
                 new_value = fields[option].get()
@@ -347,16 +355,16 @@ class COVID_Contacts_Information:
             self.save_contacts()
             messagebox.showinfo("Success", "Contact updated successfully.")
             edit_window.destroy()
-            self.menu_window.deiconify()
+            menu_window.deiconify()
 
         def cancel_edit():
             edit_window.destroy()
-            self.menu_window.deiconify()
+            menu_window.deiconify()
 
         # Create the "Edit Contact Fields" window
-        edit_window = tk.Toplevel(self.menu_window)
+        edit_window = tk.Toplevel(menu_window)
         edit_window.title("Edit Contact Fields")
-        edit_window.geometry("600x600")
+        edit_window.geometry("1000x600")
         edit_window.resizable(False, False)
         edit_options = ["First Name", "Last Name", "Email Address", "Contact Number"]
         fields = {}
@@ -372,10 +380,10 @@ class COVID_Contacts_Information:
 
         # Save and Cancel buttons
         save_button = tk.Button(edit_window, text="Save", command=lambda: save_edited_contact(contact, fields))
-        save_button.pack(pady=10)
-
         cancel_button = tk.Button(edit_window, text="Cancel", command=cancel_edit)
-        cancel_button.pack(pady=5)
+        
+        cancel_button.pack(side=tk.BOTTOM, pady=5)
+        save_button.pack(side=tk.BOTTOM, pady=10)
 
     def delete_contact(self):
         def delete_selected_contact():
