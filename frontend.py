@@ -64,15 +64,32 @@ class COVID_Contacts_Information:
         self.start_button = tk.Button(self.canvas, text="START", font=("Poppins", 30), command=self.on_start_button_click, bg="#006B65", fg="#370607")
         self.start_button.place(x=button_x, y=button_y, anchor=tk.CENTER)
 
-    def load_contacts_from_file(self):  # to load the contacts saved in csv
+    def load_contacts_from_file(self):
         try:
             with open("covid_contacts_record.csv", mode="r") as file:
-                reader = csv.reader(file)  # set read mode using csv reader
-                self.all_contacts = list(reader)  # save sa all_contacts
+                reader = csv.reader(file)
+                header = next(reader)  # Skip the header row
+                self.all_contacts = list(reader)
+
+                # Check if the file is empty
+                if not self.all_contacts:
+                    # Optionally, you can choose to display a message to the user
+                    messagebox.showinfo("Empty Contact Book", "The contact book is empty.")
+                    return  # Return without raising an exception or copying the contacts
+
+                # Convert the symptoms back to a dictionary
+                for contact in self.all_contacts:
+                    if len(contact) == 8:  # Check the length of the contact before unpacking
+                        symptoms_str = contact[4]
+                        symptoms_dict = {symptom: True if symptom in symptoms_str else False for symptom in ["Cough", "Fever", "Breathing Difficulties"]}
+                        contact[4] = symptoms_dict
+                    else:
+                        raise Exception("Invalid format in the contact book.")
+
                 self.new_contacts = self.all_contacts.copy()
-        except FileNotFoundError:  # exception handling if file is not found
+        except FileNotFoundError:
             self.save_contacts()
-        except Exception as e:  # error message
+        except Exception as e:
             raise Exception(f"Failed to load contact book: {str(e)}")
 
     def save_contacts(self):
@@ -81,11 +98,16 @@ class COVID_Contacts_Information:
                 writer = csv.writer(file)
                 writer.writerow(["First Name", "Last Name", "Email Address", "Contact Number", "Symptoms", "First Vaccine", "Second Vaccine", "Booster Shot"])
                 writer.writerows(self.all_contacts + self.new_contacts)  # Save all contacts together
-                for contact in self.all_contacts + self.new_contacts:
-                    writer.writerow(contact)
         except Exception as e:
             messagebox.showerror("Error", f"Failed to save address book: {str(e)}")
+    
+    def save_symptoms(self, symptoms):
+        symptoms_str = ", ".join(symptom for symptom, status in symptoms.items() if status)
+        return symptoms_str
 
+    def save_vaccination_status(self, vaccines):
+        return "Yes" if vaccines else "No"
+    
     def on_start_button_click(self):
         # Destroy the main window
         self.master.withdraw()
@@ -141,7 +163,7 @@ class COVID_Contacts_Information:
     def add_contact(self):
         new_contact_added = False
 
-        def save_contact(self):
+        def save_contact():
             nonlocal new_contact_added
             first_name = first_name_entry.get()
             last_name = last_name_entry.get()
@@ -154,7 +176,7 @@ class COVID_Contacts_Information:
             first_vaccine = self.first_vaccine_var.get()
             second_vaccine = self.second_vaccine_var.get()
             booster_shot = self.booster_shot_var.get()
-
+        
             if first_name and last_name and address and contact_number:
                 if any(char.isdigit() for char in first_name):
                     messagebox.showinfo("Invalid Input", "First Name cannot contain numbers.")
@@ -417,10 +439,11 @@ class COVID_Contacts_Information:
 
         # Insert data into the treeview
         for i, contact in enumerate(self.new_contacts):
-            first_name, last_name, address, contact_number, symptoms, first_vaccine, second_vaccine, booster_shot = contact
-            symptoms_str = ", ".join(symptom for symptom, status in symptoms.items() if status)
-            tree.insert("", tk.END, text=str(i + 1), values=(first_name, last_name, address, contact_number, symptoms_str, first_vaccine, second_vaccine, booster_shot))
-        
+            if len(contact) == 8:  # Check the length of the contact before unpacking
+                first_name, last_name, address, contact_number, symptoms, first_vaccine, second_vaccine, booster_shot = contact
+                symptoms_str = ", ".join(symptom for symptom, status in symptoms.items() if status)
+                tree.insert("", tk.END, text=str(i + 1), values=(first_name, last_name, address, contact_number, symptoms_str, first_vaccine, second_vaccine, booster_shot))
+
         tree.pack()
 
         def close_view_window():
