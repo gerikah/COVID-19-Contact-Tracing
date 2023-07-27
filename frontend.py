@@ -78,6 +78,11 @@ class COVID_Contacts_Information:
         try:
             with open("covid_contacts_record.csv", mode="w", newline="") as file:
                 writer = csv.writer(file)
+
+                for contact in self.new_contacts:
+                    if len(contact) == 4:
+                        writer.writerow(contact)
+
                 writer.writerows(self.new_contacts)  # Save new contacts
         except Exception as e:
             messagebox.showerror("Error", f"Failed to save address book: {str(e)}")
@@ -153,8 +158,6 @@ class COVID_Contacts_Information:
                     messagebox.showinfo("Invalid Input", "Last Name cannot contain numbers.")
                 elif not re.match(r"[^@]+@[^@]+\.[^@]+", address) or "@gmail.com" not in address:
                     messagebox.showinfo("Invalid Input", "Invalid or email address.")
-                elif any(contact[2] == address and contact[3] == int(contact_number) for contact in self.new_contacts):
-                    messagebox.showinfo("Duplicate Entry", "The contact already exists in the address book.")
                 else:
                     try:
                         contact_number = int(contact_number)  # Convert the contact number to an integer
@@ -168,6 +171,9 @@ class COVID_Contacts_Information:
                         self.menu_window.deiconify()
                     except ValueError:
                         messagebox.showinfo("Invalid Input", "Contact number must be a valid number.")
+                    except IndexError:
+                        messagebox.showinfo("Invalid Input", "Index out of range.")
+
             else:
                 messagebox.showinfo("Invalid Input", "All fields are required.")
 
