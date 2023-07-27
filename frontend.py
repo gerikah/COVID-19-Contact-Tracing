@@ -138,12 +138,19 @@ class COVID_Contacts_Information:
     def add_contact(self):
         new_contact_added = False
 
-        def save_contact():
+        def save_contact(self):
             nonlocal new_contact_added
             first_name = first_name_entry.get()
             last_name = last_name_entry.get()
             address = address_entry.get()
             contact_number = contact_number_entry.get()
+            symptoms = {
+                "Cough": self.cough_var.get(),
+                "Fever": self.fever_var.get(),
+                "Breathing Difficulties": self.breathing_var.get()}
+            first_vaccine = self.first_vaccine_var.get()
+            second_vaccine = self.second_vaccine_var.get()
+            booster_shot = self.booster_shot_var.get()
 
             if first_name and last_name and address and contact_number:
                 if any(char.isdigit() for char in first_name):
@@ -157,10 +164,25 @@ class COVID_Contacts_Information:
                 else:
                     try:
                         contact_number = int(contact_number)  # Convert the contact number to an integer
-                        new_contact = [first_name, last_name, address, contact_number]
+                        new_contact = [first_name, last_name, address, contact_number, symptoms, first_vaccine, second_vaccine, booster_shot]
                         self.new_contacts.append(new_contact)  # Add the contact to the new contacts list
                         self.save_contacts()
                         new_contact_added = True
+                        # Clear the entry fields after saving the contact
+                        first_name_entry.delete(0, tk.END)
+                        last_name_entry.delete(0, tk.END)
+                        address_entry.delete(0, tk.END)
+                        contact_number_entry.delete(0, tk.END)
+
+                        # Clear the symptom checkboxes
+                        self.cough_var.set(False)
+                        self.fever_var.set(False)
+                        self.breathing_var.set(False)
+
+                        # Clear the vaccination checkboxes
+                        self.first_vaccine_var.set(False)
+                        self.second_vaccine_var.set(False)
+                        self.booster_shot_var.set(False)
                         messagebox.showinfo("Success", "Contact added successfully.")
                         window.destroy()
                         self.show_menu()
@@ -176,30 +198,64 @@ class COVID_Contacts_Information:
         window.resizable(False, False)
 
         # Entry fields
-        first_name_label = tk.Label(window, text="First Name:")
-        first_name_entry = tk.Entry(window)
-        first_name_label.pack()
-        first_name_entry.pack()
+        label_font_style = tkfont.Font(family="Poppins", size=12)
+        entry_width = 30
 
-        last_name_label = tk.Label(window, text="Last Name:")
-        last_name_entry = tk.Entry(window)
-        last_name_label.pack()
-        last_name_entry.pack()
+        first_name_label = tk.Label(window, text="FIRST NAME:", font=label_font_style)
+        first_name_entry = tk.Entry(window, width=entry_width)
+        first_name_label.grid(row=0, column=0, padx=10, pady=10, sticky=tk.E)
+        first_name_entry.grid(row=0, column=2, padx=10, pady=10)
 
-        address_label = tk.Label(window, text="Email Address:")
-        address_entry = tk.Entry(window)
-        address_label.pack()
-        address_entry.pack()
+        last_name_label = tk.Label(window, text="LAST NAME:", font=label_font_style)
+        last_name_entry = tk.Entry(window, width=entry_width)
+        last_name_label.grid(row=1, column=0, padx=10, pady=5, sticky=tk.E)
+        last_name_entry.grid(row=1, column=2, padx=10, pady=5)
 
-        contact_number_label = tk.Label(window, text="Contact Number:")
-        contact_number_entry = tk.Entry(window)
-        contact_number_label.pack()
-        contact_number_entry.pack()
+        address_label = tk.Label(window, text="EMAIL ADDRESS:", font=label_font_style)
+        address_entry = tk.Entry(window, width=entry_width)
+        address_label.grid(row=2, column=0, padx=10, pady=10, sticky=tk.E)
+        address_entry.grid(row=2, column=2, padx=10, pady=5)
+
+        contact_number_label = tk.Label(window, text="CONTACT NUMBER:", font=label_font_style)
+        contact_number_entry = tk.Entry(window, width=entry_width)
+        contact_number_label.grid(row=3, column=0, padx=10, pady=5, sticky=tk.E)
+        contact_number_entry.grid(row=3, column=2, padx=10, pady=5)
+
+        # Entry fields for symptoms and vaccination
+        symptoms_label = tk.Label(window, text="Symptoms:")
+        symptoms_label.grid(row=1, column=7, padx=10, pady=5, sticky=tk.E)
+
+        self.cough_var = tk.BooleanVar()
+        cough_checkbox = tk.Checkbutton(window, text="Cough", variable=self.cough_var, onvalue=True, offvalue=False)
+        cough_checkbox.grid(row=2, column=8, padx=10, pady=5, sticky=tk.W)
+
+        self.fever_var = tk.BooleanVar()
+        fever_checkbox = tk.Checkbutton(window, text="Fever", variable=self.fever_var, onvalue=True, offvalue=False)
+        fever_checkbox.grid(row=3, column=8, padx=10, pady=5, sticky=tk.W)
+
+        self.breathing_var = tk.BooleanVar()
+        breathing_checkbox = tk.Checkbutton(window, text="Breathing Difficulties", variable=self.breathing_var, onvalue=True, offvalue=False)
+        breathing_checkbox.grid(row=4, column=8, padx=10, pady=5, sticky=tk.W)
+
+        vaccination_label = tk.Label(window, text="Vaccination:")
+        vaccination_label.grid(row=5, column=7, padx=10, pady=5, sticky=tk.E)
+
+        self.first_vaccine_var = tk.BooleanVar()
+        first_vaccine_checkbox = tk.Checkbutton(window, text="1st Vaccine", variable=self.first_vaccine_var, onvalue=True, offvalue=False)
+        first_vaccine_checkbox.grid(row=6, column=8, padx=10, pady=5, sticky=tk.W)
+
+        self.second_vaccine_var = tk.BooleanVar()
+        second_vaccine_checkbox = tk.Checkbutton(window, text="2nd Vaccine", variable=self.second_vaccine_var, onvalue=True, offvalue=False)
+        second_vaccine_checkbox.grid(row=7, column=8, padx=10, pady=5, sticky=tk.W)
+
+        self.booster_shot_var = tk.BooleanVar()
+        booster_shot_checkbox = tk.Checkbutton(window, text="Booster Shot", variable=self.booster_shot_var, onvalue=True, offvalue=False)
+        booster_shot_checkbox.grid(row=8, column=8, padx=10, pady=5, sticky=tk.W)
 
         # Save button
         save_button = tk.Button(window, text="Save", command=save_contact)
-        save_button.pack()
-
+        save_button.grid(row=4, column=1, padx=10, pady=30, sticky=tk.E)
+        
         self.menu_window.withdraw()  # Hide the menu window while the "Add Contact" window is open
 
     def edit_contact(self):
