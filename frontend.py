@@ -6,6 +6,7 @@ import re
 import tkinter.font as tkfont
 from PIL import Image, ImageTk
 import csv
+import copy
 
 
 class COVID_Contacts_Information:
@@ -86,12 +87,16 @@ class COVID_Contacts_Information:
                     else:
                         raise Exception("Invalid format in the contact book.")
 
-                self.new_contacts = self.all_contacts.copy()
+                # Clear the existing entries in new_contacts before loading contacts from the file
         except FileNotFoundError:
+            self.all_contacts = []  # Initialize as an empty list if the file is not found
             self.save_contacts()
         except Exception as e:
             raise Exception(f"Failed to load contact book: {str(e)}")
 
+        # Use deepcopy to ensure that we are not modifying the original data
+        self.new_contacts = copy.deepcopy(self.all_contacts)
+        
     def save_contacts(self):
         try:
             with open("covid_contacts_record.csv", mode="w", newline="") as file:
@@ -128,7 +133,6 @@ class COVID_Contacts_Information:
         self.exit_button.place(x=855, y=480, anchor=tk.NE)
 
     def show_menu(self):
-
         if self.menu_window is None or not self.menu_window.winfo_exists():
             # If the menu window doesn't exist or is already closed, create a new one
             self.menu_window = tk.Toplevel(self.master)
@@ -301,12 +305,13 @@ class COVID_Contacts_Information:
             if selected_index:
                 selected_contact = self.new_contacts[selected_index[0]]
                 edit_window.destroy()
-                self.edit_selected_contact_fields(selected_contact)
+                self.edit_selected_contact_fields(selected_contact, self.menu_window)
             else:
                 messagebox.showinfo("Invalid Input", "Please select a contact to edit.")
 
         def cancel_edit():
             edit_window.destroy()
+            self.show_menu()
 
         # Create the "Edit Contact" window
         edit_window = tk.Toplevel(self.menu_window)
@@ -314,11 +319,14 @@ class COVID_Contacts_Information:
         edit_window.geometry("1000x600")
         edit_window.resizable(False, False)
 
+        frame = tk.Frame(edit_window)
+        frame.pack(pady=10)
+        
         # Get all contacts' full names for the listbox
         contact_names = [f"{contact[0]} {contact[1]}" for contact in self.new_contacts]
 
         # Listbox to display the contacts
-        contact_listbox = tk.Listbox(edit_window, width=30, height=10, selectmode=tk.SINGLE)
+        contact_listbox = tk.Listbox(edit_window, width=800, height=400, selectmode=tk.SINGLE)
         for name in contact_names:
             contact_listbox.insert(tk.END, name)
         contact_listbox.pack(pady=10)
@@ -339,16 +347,16 @@ class COVID_Contacts_Information:
             self.save_contacts()
             messagebox.showinfo("Success", "Contact updated successfully.")
             edit_window.destroy()
-            self.show_menu()
+            self.menu_window.deiconify()
 
         def cancel_edit():
             edit_window.destroy()
-            self.show_menu()
+            self.menu_window.deiconify()
 
         # Create the "Edit Contact Fields" window
         edit_window = tk.Toplevel(self.menu_window)
         edit_window.title("Edit Contact Fields")
-        edit_window.geometry("1000x600")
+        edit_window.geometry("600x600")
         edit_window.resizable(False, False)
         edit_options = ["First Name", "Last Name", "Email Address", "Contact Number"]
         fields = {}
@@ -427,15 +435,18 @@ class COVID_Contacts_Information:
         tree.heading("Booster Shot", text="Booster Shot")
 
         # Configure column widths
-        tree.column("#0", width=100)
+        tree.column("#0", width=20)
         tree.column("First Name", width=100)
         tree.column("Last Name", width=100)
-        tree.column("Email Address", width=200)
+        tree.column("Email Address", width=150)
         tree.column("Contact Number", width=100)
-        tree.column("Symptoms", width=150)
+        tree.column("Symptoms", width=200)
         tree.column("First Vaccine", width=100)
         tree.column("Second Vaccine", width=100)
         tree.column("Booster Shot", width=100)
+
+        # Delete existing entries in the Treeview
+        tree.delete(*tree.get_children())
 
         # Insert data into the treeview
         for i, contact in enumerate(self.new_contacts):
