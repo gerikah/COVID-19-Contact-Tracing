@@ -79,7 +79,10 @@ class COVID_Contacts_Information:
         try:
             with open("covid_contacts_record.csv", mode="w", newline="") as file:
                 writer = csv.writer(file)
+                writer.writerow(["First Name", "Last Name", "Email Address", "Contact Number", "Symptoms", "First Vaccine", "Second Vaccine", "Booster Shot"])
                 writer.writerows(self.all_contacts + self.new_contacts)  # Save all contacts together
+                for contact in self.all_contacts + self.new_contacts:
+                    writer.writerow(contact)
         except Exception as e:
             messagebox.showerror("Error", f"Failed to save address book: {str(e)}")
 
@@ -201,60 +204,71 @@ class COVID_Contacts_Information:
         label_font_style = tkfont.Font(family="Poppins", size=12)
         entry_width = 30
 
+        for i in range(11):  # Total number of rows in the layout
+            window.grid_rowconfigure(i, weight=1)
+            # Create two columns for each row
+        window.grid_columnconfigure(i*2, weight=0)  # For labels
+        window.grid_columnconfigure(i*2 + 1, weight=1)  # For entry fields
+
+        # Basic Information
         first_name_label = tk.Label(window, text="FIRST NAME:", font=label_font_style)
         first_name_entry = tk.Entry(window, width=entry_width)
-        first_name_label.grid(row=0, column=0, padx=10, pady=10, sticky=tk.E)
-        first_name_entry.grid(row=0, column=2, padx=10, pady=10)
+        first_name_label.grid(row=0, column=0, padx=10, pady=5, sticky=tk.W)
+        first_name_entry.grid(row=0, column=1, padx=10, pady=5, sticky=tk.W)
 
         last_name_label = tk.Label(window, text="LAST NAME:", font=label_font_style)
         last_name_entry = tk.Entry(window, width=entry_width)
-        last_name_label.grid(row=1, column=0, padx=10, pady=5, sticky=tk.E)
-        last_name_entry.grid(row=1, column=2, padx=10, pady=5)
+        last_name_label.grid(row=1, column=0, padx=10, pady=5, sticky=tk.W)
+        last_name_entry.grid(row=1, column=1, padx=10, pady=5, sticky=tk.W)
 
         address_label = tk.Label(window, text="EMAIL ADDRESS:", font=label_font_style)
         address_entry = tk.Entry(window, width=entry_width)
-        address_label.grid(row=2, column=0, padx=10, pady=10, sticky=tk.E)
-        address_entry.grid(row=2, column=2, padx=10, pady=5)
+        address_label.grid(row=2, column=0, padx=10, pady=5, sticky=tk.W)
+        address_entry.grid(row=2, column=1, padx=10, pady=5, sticky=tk.W)
 
         contact_number_label = tk.Label(window, text="CONTACT NUMBER:", font=label_font_style)
         contact_number_entry = tk.Entry(window, width=entry_width)
-        contact_number_label.grid(row=3, column=0, padx=10, pady=5, sticky=tk.E)
-        contact_number_entry.grid(row=3, column=2, padx=10, pady=5)
+        contact_number_label.grid(row=3, column=0, padx=10, pady=5, sticky=tk.W)
+        contact_number_entry.grid(row=3, column=1, padx=10, pady=5, sticky=tk.W)
 
         # Entry fields for symptoms and vaccination
-        symptoms_label = tk.Label(window, text="Symptoms:")
-        symptoms_label.grid(row=1, column=7, padx=10, pady=5, sticky=tk.E)
+        symptoms_label = tk.Label(window, text="SYMPTOMS:", font=label_font_style)
+        symptoms_label.grid(row=4, column=0, padx=10, pady=5, sticky=tk.W)
 
         self.cough_var = tk.BooleanVar()
-        cough_checkbox = tk.Checkbutton(window, text="Cough", variable=self.cough_var, onvalue=True, offvalue=False)
-        cough_checkbox.grid(row=2, column=8, padx=10, pady=5, sticky=tk.W)
+        cough_checkbox = tk.Checkbutton(window, text="Cough", font=label_font_style, variable=self.cough_var, onvalue=True, offvalue=False)
+        cough_checkbox.grid(row=5, column=0, padx=10, pady=5, sticky=tk.W)
 
         self.fever_var = tk.BooleanVar()
-        fever_checkbox = tk.Checkbutton(window, text="Fever", variable=self.fever_var, onvalue=True, offvalue=False)
-        fever_checkbox.grid(row=3, column=8, padx=10, pady=5, sticky=tk.W)
+        fever_checkbox = tk.Checkbutton(window, text="Fever", font=label_font_style, variable=self.fever_var, onvalue=True, offvalue=False)
+        fever_checkbox.grid(row=6, column=0, padx=10, pady=5, sticky=tk.W)
 
         self.breathing_var = tk.BooleanVar()
-        breathing_checkbox = tk.Checkbutton(window, text="Breathing Difficulties", variable=self.breathing_var, onvalue=True, offvalue=False)
-        breathing_checkbox.grid(row=4, column=8, padx=10, pady=5, sticky=tk.W)
+        breathing_checkbox = tk.Checkbutton(window, text="Breathing Difficulties", font=label_font_style, variable=self.breathing_var, onvalue=True, offvalue=False)
+        breathing_checkbox.grid(row=7, column=0, padx=10, pady=5, sticky=tk.W)
 
-        vaccination_label = tk.Label(window, text="Vaccination:")
-        vaccination_label.grid(row=5, column=7, padx=10, pady=5, sticky=tk.E)
+        vaccination_label = tk.Label(window, text="VACCINATION:", font=label_font_style)
+        vaccination_label.grid(row=8, column=0, padx=10, pady=5, sticky=tk.W)
 
         self.first_vaccine_var = tk.BooleanVar()
-        first_vaccine_checkbox = tk.Checkbutton(window, text="1st Vaccine", variable=self.first_vaccine_var, onvalue=True, offvalue=False)
-        first_vaccine_checkbox.grid(row=6, column=8, padx=10, pady=5, sticky=tk.W)
+        first_vaccine_checkbox = tk.Checkbutton(window, text="1st Vaccine", font=label_font_style, variable=self.first_vaccine_var, onvalue=True, offvalue=False)
+        first_vaccine_checkbox.grid(row=9, column=0, padx=10, pady=5, sticky=tk.W)
 
         self.second_vaccine_var = tk.BooleanVar()
-        second_vaccine_checkbox = tk.Checkbutton(window, text="2nd Vaccine", variable=self.second_vaccine_var, onvalue=True, offvalue=False)
-        second_vaccine_checkbox.grid(row=7, column=8, padx=10, pady=5, sticky=tk.W)
+        second_vaccine_checkbox = tk.Checkbutton(window, text="2nd Vaccine", font=label_font_style, variable=self.second_vaccine_var, onvalue=True, offvalue=False)
+        second_vaccine_checkbox.grid(row=10, column=0, padx=10, pady=5, sticky=tk.W)
 
         self.booster_shot_var = tk.BooleanVar()
-        booster_shot_checkbox = tk.Checkbutton(window, text="Booster Shot", variable=self.booster_shot_var, onvalue=True, offvalue=False)
-        booster_shot_checkbox.grid(row=8, column=8, padx=10, pady=5, sticky=tk.W)
-
+        booster_shot_checkbox = tk.Checkbutton(window, text="Booster Shot", font=label_font_style, variable=self.booster_shot_var, onvalue=True, offvalue=False)
+        booster_shot_checkbox.grid(row=11, column=0, padx=10, pady=5, sticky=tk.W)
+        
         # Save button
-        save_button = tk.Button(window, text="Save", command=save_contact)
-        save_button.grid(row=4, column=1, padx=10, pady=30, sticky=tk.E)
+        save_button = tk.Button(window, text="SAVE", font=label_font_style, command=save_contact)
+        save_button.grid(row=15, column=0, padx=10, pady=20, sticky=tk.EW)
+        
+         # Center the button at the bottom
+        window.grid_rowconfigure(15, weight=1)
+        window.grid_columnconfigure(0, weight=1)
         
         self.menu_window.withdraw()  # Hide the menu window while the "Add Contact" window is open
 
@@ -379,12 +393,16 @@ class COVID_Contacts_Information:
         view_window.resizable(False, False)
 
         tree = ttk.Treeview(view_window)
-        tree["columns"] = ("First Name", "Last Name", "Email Address", "Contact Number")
+        tree["columns"] = ("First Name", "Last Name", "Email Address", "Contact Number","Symptoms", "First Vaccine", "Second Vaccine", "Booster Shot")
         tree.heading("#0", text="ID")
         tree.heading("First Name", text="First Name")
         tree.heading("Last Name", text="Last Name")
         tree.heading("Email Address", text="Email Address")
         tree.heading("Contact Number", text="Contact Number")
+        tree.heading("Symptoms", text="Symptoms")
+        tree.heading("First Vaccine", text="First Vaccine")
+        tree.heading("Second Vaccine", text="Second Vaccine")
+        tree.heading("Booster Shot", text="Booster Shot")
 
         # Configure column widths
         tree.column("#0", width=100)
@@ -392,11 +410,17 @@ class COVID_Contacts_Information:
         tree.column("Last Name", width=100)
         tree.column("Email Address", width=200)
         tree.column("Contact Number", width=100)
+        tree.column("Symptoms", width=150)
+        tree.column("First Vaccine", width=100)
+        tree.column("Second Vaccine", width=100)
+        tree.column("Booster Shot", width=100)
 
         # Insert data into the treeview
         for i, contact in enumerate(self.new_contacts):
-            tree.insert("", tk.END, text=str(i + 1), values=(contact[0], contact[1], contact[2], contact[3]))
-
+            first_name, last_name, address, contact_number, symptoms, first_vaccine, second_vaccine, booster_shot = contact
+            symptoms_str = ", ".join(symptom for symptom, status in symptoms.items() if status)
+            tree.insert("", tk.END, text=str(i + 1), values=(first_name, last_name, address, contact_number, symptoms_str, first_vaccine, second_vaccine, booster_shot))
+        
         tree.pack()
 
         def close_view_window():
