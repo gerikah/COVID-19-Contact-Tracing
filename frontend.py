@@ -68,10 +68,9 @@ class COVID_Contacts_Information:
             with open("covid_contacts_record.csv", mode="r") as file:
                 reader = csv.reader(file) # set read mode using csv reader
                 self.all_contacts = list(reader) # save sa all_contacts
+                self.new_contacts = self.all_contacts.copy()
         except FileNotFoundError: # exception handling if file is not found
-            with open("covid_contacts_record.csv", mode="w", newline="") as file:
-                writer = csv.writer(file)
-                writer.writerows([]) 
+            self.save_contacts()
         except Exception as e: # error message
             raise Exception(f"Failed to load contact book: {str(e)}")
     
@@ -79,7 +78,7 @@ class COVID_Contacts_Information:
         try:
             with open("covid_contacts_record.csv", mode="w", newline="") as file:
                 writer = csv.writer(file)
-                writer.writerows(self.all_contacts + self.new_contacts)  # Save all contacts together
+                writer.writerows(self.new_contacts)  # Save new contacts
         except Exception as e:
             messagebox.showerror("Error", f"Failed to save address book: {str(e)}")
 
@@ -137,21 +136,6 @@ class COVID_Contacts_Information:
 
         self.menu_window.deiconify()
         
-    def add_existing_file(self):
-        file_path = filedialog.askopenfilename(title="Select Existing File", filetypes=[("CSV Files", "*.csv"),("TXT Files", "*.txt"),("PDF Files","*.pdf")])
-        if file_path:
-            try:
-                with open(file_path, mode="r") as file:
-                    reader = csv.reader(file)
-                    contacts = list(reader)
-                    self.new_contacts.extend(contacts)  # Add contacts to the new contacts list
-                    self.save_contacts()  # Save all contacts
-                    messagebox.showinfo("Success", "File added successfully.")
-            except FileNotFoundError:
-                messagebox.showerror("File Not Found", "The selected file does not exist.")
-            except Exception as e:
-                messagebox.showerror("Error", f"Failed to add file: {str(e)}")
-
     def add_contact(self):
         new_contact_added = False
 
@@ -469,6 +453,7 @@ class COVID_Contacts_Information:
             value.grid(row=i, column=1)
     
     def on_exit(self):
+        self.save_contacts()
         # Close the entire application by destroying the root window
         self.master.destroy()
 
