@@ -263,30 +263,30 @@ class COVID_Contacts_Information:
         symptoms_label.grid(row=4, column=2, padx=10, pady=5, sticky=tk.W)
 
         self.cough_var = tk.BooleanVar()
-        cough_checkbox = tk.Checkbutton(window, text="Cough", bg="#370607", fg="white", bd="5", font=label_font_style, variable=self.cough_var, onvalue=True, offvalue=False)
+        cough_checkbox = tk.Checkbutton(window, text="Cough", bg="#370607", fg="#006B65", bd="5", font=label_font_style, variable=self.cough_var, onvalue=True, offvalue=False)
         cough_checkbox.grid(row=5, column=3, padx=10, pady=5, sticky=tk.W)
 
         self.fever_var = tk.BooleanVar()
-        fever_checkbox = tk.Checkbutton(window, text="Fever", bg="#370607", fg="white", bd="5", font=label_font_style, variable=self.fever_var, onvalue=True, offvalue=False)
+        fever_checkbox = tk.Checkbutton(window, text="Fever", bg="#370607", fg="#006B65", bd="5", font=label_font_style, variable=self.fever_var, onvalue=True, offvalue=False)
         fever_checkbox.grid(row=6, column=3, padx=10, pady=5, sticky=tk.W)
 
         self.breathing_var = tk.BooleanVar()
-        breathing_checkbox = tk.Checkbutton(window, text="Breathing Difficulties", bg="#370607", fg="white", bd="5", font=label_font_style, variable=self.breathing_var, onvalue=True, offvalue=False)
+        breathing_checkbox = tk.Checkbutton(window, text="Breathing Difficulties", bg="#370607", fg="#006B65", bd="5", font=label_font_style, variable=self.breathing_var, onvalue=True, offvalue=False)
         breathing_checkbox.grid(row=7, column=3, padx=10, pady=5, sticky=tk.W)
 
         vaccination_label = tk.Label(window, text="VACCINATION:", bg="#370607", fg="white", bd="5", font=label_font_style)
         vaccination_label.grid(row=8, column=2, padx=10, pady=5, sticky=tk.W)
 
         self.first_vaccine_var = tk.BooleanVar()
-        first_vaccine_checkbox = tk.Checkbutton(window, text="1st Vaccine", bg="#370607", fg="white", bd="5", font=label_font_style, variable=self.first_vaccine_var, onvalue=True, offvalue=False)
+        first_vaccine_checkbox = tk.Checkbutton(window, text="1st Vaccine", bg="#370607", fg="#006B65", bd="5", font=label_font_style, variable=self.first_vaccine_var, onvalue=True, offvalue=False)
         first_vaccine_checkbox.grid(row=9, column=3, padx=10, pady=5, sticky=tk.W)
 
         self.second_vaccine_var = tk.BooleanVar()
-        second_vaccine_checkbox = tk.Checkbutton(window, text="2nd Vaccine", bg="#370607", fg="white", bd="5", font=label_font_style, variable=self.second_vaccine_var, onvalue=True, offvalue=False)
+        second_vaccine_checkbox = tk.Checkbutton(window, text="2nd Vaccine", bg="#370607", fg="#006B65", bd="5", font=label_font_style, variable=self.second_vaccine_var, onvalue=True, offvalue=False)
         second_vaccine_checkbox.grid(row=10, column=3, padx=10, pady=5, sticky=tk.W)
 
         self.booster_shot_var = tk.BooleanVar()
-        booster_shot_checkbox = tk.Checkbutton(window, text="Booster Shot", bg="#370607", fg="white", bd="5", font=label_font_style, variable=self.booster_shot_var, onvalue=True, offvalue=False)
+        booster_shot_checkbox = tk.Checkbutton(window, text="Booster Shot", bg="#370607", fg="#006B65", bd="5", font=label_font_style, variable=self.booster_shot_var, onvalue=True, offvalue=False)
         booster_shot_checkbox.grid(row=11, column=3, padx=10, pady=5, sticky=tk.W)
         
         # Save button
@@ -392,10 +392,10 @@ class COVID_Contacts_Information:
 
         # Entry fields for each contact field
         for option in edit_options:
-            label = tk.Label(content_frame, text=option, bg="#370607", fg="white", font=("Arial", 12))
+            label = tk.Label(content_frame, text=option, bg="#370607", fg="white", font=("Poppins", 12))
             label.grid(row=edit_options.index(option), column=0, pady=5, sticky="w")
 
-            entry = tk.Entry(content_frame, bg="white", fg="#370607", font=("Arial", 12))
+            entry = tk.Entry(content_frame, bg="white", fg="#370607", font=("Poppins", 12))
             entry.grid(row=edit_options.index(option), column=1, pady=5, padx=10, ipadx=50, sticky="w")
             entry.insert(0, contact[edit_options.index(option)])
             fields[option] = entry
@@ -407,8 +407,8 @@ class COVID_Contacts_Information:
         save_button = tk.Button(edit_window, text="Save", command=lambda: save_edited_contact(contact, fields))
         cancel_button = tk.Button(edit_window, text="Cancel", command=cancel_edit)
         
-        cancel_button.pack(side=tk.BOTTOM, pady=5)
-        save_button.pack(side=tk.BOTTOM, pady=10)
+        cancel_button.pack(side=tk.BOTTOM, pady=50, ipadx= 15)
+        save_button.pack(side=tk.BOTTOM, pady=10, ipadx= 20)
             
         
         # Apply padding to all widgets in content_frame
