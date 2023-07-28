@@ -1,5 +1,4 @@
 First Name,Last Name,Email Address,Contact Number,Symptoms,First Vaccine,Second Vaccine,Booster Shot
-kurt,catague,kurt@gmail.com,989372832,"{'Cough': True, 'Fever': True, 'Breathing Difficulties': True}",True,True,False
-kurt,catague,kurt@gmail.com,989372832,"{'Cough': True, 'Fever': True, 'Breathing Difficulties': True}",True,True,False
-kurt,catague,kurt@gmail.com,989372832,"{'Cough': True, 'Fever': True, 'Breathing Difficulties': True}",True,True,False
-kurt,catague,kurt@gmail.com,989372832,"{'Cough': True, 'Fever': True, 'Breathing Difficulties': True}",True,True,False
+Gerikah,Alday,gerikah@gmail.com,97826486824,"{'Cough': True, 'Fever': True, 'Breathing Difficulties': True}",True,True,False
+Gerikah,Alday,gerikah@gmail.com,97826486824,"{'Cough': True, 'Fever': True, 'Breathing Difficulties': True}",True,True,False
+Kurt,Catague,kurt@gmail.com,9884758453,"{'Cough': False, 'Fever': True, 'Breathing Difficulties': False}",True,True,True
