@@ -450,11 +450,11 @@ class COVID_Contacts_Information:
         delete_window = tk.Toplevel(self.menu_window)
         delete_window.title("Delete Contact")
         delete_window.geometry("1000x600")
+        delete_window.config(bg="#006B65")        
         delete_window.resizable(False, False)
-        delete_window.config(bg="#006B65")
 
         # Create a frame to organize the layout of the listbox and the "Select" and "Cancel" button
-        frame = tk.Frame(delete_window, bg="#006B65")
+        frame = tk.Frame(delete_window)
         frame.pack(pady=10)
         
         # Get all contacts' details for the listbox
@@ -469,7 +469,7 @@ class COVID_Contacts_Information:
         # Set the font and center the text in the listbox
         contact_listbox.configure(font=contact_font, justify='center')
 
-        for contact in contact_details:
+        for contact in self.new_contacts:
             full_name = f"{contact[0]} {contact[1]}"
             email = f"Email: {contact[2]}"
             phone = f"Phone: {contact[3]}"
@@ -495,7 +495,7 @@ class COVID_Contacts_Information:
         x = (screen_width - window_width) // 2
         y = (screen_height - window_height) // 2
         delete_window.geometry(f"+{x}+{y}")
-        
+
         # Hide the menu window while the "Delete Contact" window is open
         self.menu_window.withdraw()
 
@@ -557,15 +557,24 @@ class COVID_Contacts_Information:
         search_window.geometry("1000x600")
         search_window.resizable(False, False)
 
+        search_window.config(bg="#006B65")
+
         self.search_window = search_window
 
-        entry_label = tk.Label(search_window, text="Enter search query:")
+        entry_label = tk.Label(search_window, text="Search Contact", font=("Poppins", 12), bg="#370607", fg="white", bd=5)
         entry_label.pack(pady=10)
 
-        entry = tk.Entry(search_window)
+        entry = tk.Entry(search_window, font=("Poppins", 12), bg="#370607", fg="white", bd=5)
         entry.pack()
 
-        search_button = tk.Button(search_window, text="Search", command=lambda win=search_window: self.perform_search(None, entry.get(), win))
+        # Dropdown menu for selecting search criteria
+        search_criteria_var = tk.StringVar(search_window)
+        search_criteria_var.set("Last Name")  # Default selection
+        search_criteria_menu = tk.OptionMenu(search_window, search_criteria_var, "First Name", "Last Name", "Address", "Contact Number")
+        search_criteria_menu.config(font=("Poppins", 12), bg="#370607", fg="white", bd=5)
+        search_criteria_menu.pack(pady=10)
+
+        search_button = tk.Button(search_window, text="Search", font=("Poppins", 12), bg="#370607", fg="white", bd=5, command=lambda win=search_window: self.perform_search(search_criteria_var.get(), entry.get(), win))
         search_button.pack(pady=10)
 
         search_window.protocol("WM_DELETE_WINDOW", self.close_search_window)
@@ -579,13 +588,13 @@ class COVID_Contacts_Information:
         if search_query:
             results = []
             for contact in self.new_contacts:
-                if search_criteria is None or search_criteria == "Last Name" and search_query.lower() in contact[1].lower():
+                if search_criteria == "Last Name" and search_query.lower() in contact[1].lower():
                     results.append(contact)
-                elif search_criteria is None or search_criteria == "First Name" and search_query.lower() in contact[0].lower():
+                elif search_criteria == "First Name" and search_query.lower() in contact[0].lower():
                     results.append(contact)
-                elif search_criteria is None or search_criteria == "Address" and search_query.lower() in contact[2].lower():
+                elif search_criteria == "Address" and search_query.lower() in contact[2].lower():
                     results.append(contact)
-                elif search_criteria is None or search_criteria == "Contact Number" and search_query.lower() in str(contact[3]):
+                elif search_criteria == "Contact Number" and search_query.lower() in str(contact[3]):
                     results.append(contact)
             if results:
                 self.show_search_results(results, search_window)
@@ -599,18 +608,18 @@ class COVID_Contacts_Information:
         result_frame.pack(pady=10)
 
         tree = ttk.Treeview(result_frame)
-        tree["columns"] = ("First Name", "Last Name", "Address", "Contact Number")
+        tree["columns"] = ("First Name", "Last Name", "Email Address", "Contact Number")
         tree.heading("#0", text="ID")
         tree.heading("First Name", text="First Name")
         tree.heading("Last Name", text="Last Name")
-        tree.heading("Address", text="Address")
+        tree.heading("Email Address", text="Email Address")
         tree.heading("Contact Number", text="Contact Number")
 
         # Configure column widths
         tree.column("#0", width=50)
         tree.column("First Name", width=100)
         tree.column("Last Name", width=100)
-        tree.column("Address", width=200)
+        tree.column("Email Address", width=200)
         tree.column("Contact Number", width=100)
 
         # Insert data into the treeview
