@@ -143,7 +143,7 @@ class COVID_Contacts_Information:
             self.canvas.pack()
 
             # Add a rectangle on the left side of the canvas
-            self.canvas.create_rectangle(0, 0, 600, 600, fill="#A6A6A6")
+            self.canvas.create_rectangle(0, 0, 570, 600, fill="#006B65")
 
             # Load the image
             bg_image = Image.open("C:\\Users\\gerik\\OneDrive\\Documents\\GitHub\\COVID-19-Contact-Tracing\\Menu Window Image - Safe Trace.png")
@@ -224,6 +224,7 @@ class COVID_Contacts_Information:
         window = tk.Toplevel(self.menu_window)
         window.title("Add Contact")
         window.geometry("1000x600")
+        window.config(bg="#006B65")
         window.resizable(False, False)
 
         # Entry fields
@@ -231,66 +232,66 @@ class COVID_Contacts_Information:
         entry_width = 30
 
         for i in range(11):  # Total number of rows in the layout
-            window.grid_rowconfigure(i, weight=1)
+            window.grid_rowconfigure(i, weight=2)
             # Create two columns for each row
-        window.grid_columnconfigure(i*2, weight=0)  # For labels
-        window.grid_columnconfigure(i*2 + 1, weight=1)  # For entry fields
+        window.grid_columnconfigure(i*4, weight=0)  # For labels
+        window.grid_columnconfigure(i*4 + 1, weight=1)  # For entry fields
 
         # Basic Information
-        first_name_label = tk.Label(window, text="FIRST NAME:", font=label_font_style)
+        first_name_label = tk.Label(window, text="FIRST NAME:", bg="#370607", fg="white", bd="5", font=label_font_style)
         first_name_entry = tk.Entry(window, width=entry_width)
-        first_name_label.grid(row=0, column=0, padx=10, pady=5, sticky=tk.W)
-        first_name_entry.grid(row=0, column=1, padx=10, pady=5, sticky=tk.W)
+        first_name_label.grid(row=0, column=2, padx=10, pady=5, sticky=tk.W)
+        first_name_entry.grid(row=0, column=3, padx=10, pady=5, sticky=tk.W)
 
-        last_name_label = tk.Label(window, text="LAST NAME:", font=label_font_style)
+        last_name_label = tk.Label(window, text="LAST NAME:", bg="#370607", fg="white", bd="5", font=label_font_style)
         last_name_entry = tk.Entry(window, width=entry_width)
-        last_name_label.grid(row=1, column=0, padx=10, pady=5, sticky=tk.W)
-        last_name_entry.grid(row=1, column=1, padx=10, pady=5, sticky=tk.W)
+        last_name_label.grid(row=1, column=2, padx=10, pady=5, sticky=tk.W)
+        last_name_entry.grid(row=1, column=3, padx=10, pady=5, sticky=tk.W)
 
-        address_label = tk.Label(window, text="EMAIL ADDRESS:", font=label_font_style)
+        address_label = tk.Label(window, text="EMAIL ADDRESS:", bg="#370607", fg="white", bd="5", font=label_font_style)
         address_entry = tk.Entry(window, width=entry_width)
-        address_label.grid(row=2, column=0, padx=10, pady=5, sticky=tk.W)
-        address_entry.grid(row=2, column=1, padx=10, pady=5, sticky=tk.W)
+        address_label.grid(row=2, column=2, padx=10, pady=5, sticky=tk.W)
+        address_entry.grid(row=2, column=3, padx=10, pady=5, sticky=tk.W)
 
-        contact_number_label = tk.Label(window, text="CONTACT NUMBER:", font=label_font_style)
+        contact_number_label = tk.Label(window, text="CONTACT NUMBER:", bg="#370607", fg="white", bd="5", font=label_font_style)
         contact_number_entry = tk.Entry(window, width=entry_width)
-        contact_number_label.grid(row=3, column=0, padx=10, pady=5, sticky=tk.W)
-        contact_number_entry.grid(row=3, column=1, padx=10, pady=5, sticky=tk.W)
+        contact_number_label.grid(row=3, column=2, padx=10, pady=5, sticky=tk.W)
+        contact_number_entry.grid(row=3, column=3, padx=10, pady=5, sticky=tk.W)
 
         # Entry fields for symptoms and vaccination
-        symptoms_label = tk.Label(window, text="SYMPTOMS:", font=label_font_style)
-        symptoms_label.grid(row=4, column=0, padx=10, pady=5, sticky=tk.W)
+        symptoms_label = tk.Label(window, text="SYMPTOMS:", bg="#370607", fg="white", bd="5", font=label_font_style)
+        symptoms_label.grid(row=4, column=2, padx=10, pady=5, sticky=tk.W)
 
         self.cough_var = tk.BooleanVar()
-        cough_checkbox = tk.Checkbutton(window, text="Cough", font=label_font_style, variable=self.cough_var, onvalue=True, offvalue=False)
-        cough_checkbox.grid(row=5, column=0, padx=10, pady=5, sticky=tk.W)
+        cough_checkbox = tk.Checkbutton(window, text="Cough", bg="#370607", fg="white", bd="5", font=label_font_style, variable=self.cough_var, onvalue=True, offvalue=False)
+        cough_checkbox.grid(row=5, column=3, padx=10, pady=5, sticky=tk.W)
 
         self.fever_var = tk.BooleanVar()
-        fever_checkbox = tk.Checkbutton(window, text="Fever", font=label_font_style, variable=self.fever_var, onvalue=True, offvalue=False)
-        fever_checkbox.grid(row=6, column=0, padx=10, pady=5, sticky=tk.W)
+        fever_checkbox = tk.Checkbutton(window, text="Fever", bg="#370607", fg="white", bd="5", font=label_font_style, variable=self.fever_var, onvalue=True, offvalue=False)
+        fever_checkbox.grid(row=6, column=3, padx=10, pady=5, sticky=tk.W)
 
         self.breathing_var = tk.BooleanVar()
-        breathing_checkbox = tk.Checkbutton(window, text="Breathing Difficulties", font=label_font_style, variable=self.breathing_var, onvalue=True, offvalue=False)
-        breathing_checkbox.grid(row=7, column=0, padx=10, pady=5, sticky=tk.W)
+        breathing_checkbox = tk.Checkbutton(window, text="Breathing Difficulties", bg="#370607", fg="white", bd="5", font=label_font_style, variable=self.breathing_var, onvalue=True, offvalue=False)
+        breathing_checkbox.grid(row=7, column=3, padx=10, pady=5, sticky=tk.W)
 
-        vaccination_label = tk.Label(window, text="VACCINATION:", font=label_font_style)
-        vaccination_label.grid(row=8, column=0, padx=10, pady=5, sticky=tk.W)
+        vaccination_label = tk.Label(window, text="VACCINATION:", bg="#370607", fg="white", bd="5", font=label_font_style)
+        vaccination_label.grid(row=8, column=2, padx=10, pady=5, sticky=tk.W)
 
         self.first_vaccine_var = tk.BooleanVar()
-        first_vaccine_checkbox = tk.Checkbutton(window, text="1st Vaccine", font=label_font_style, variable=self.first_vaccine_var, onvalue=True, offvalue=False)
-        first_vaccine_checkbox.grid(row=9, column=0, padx=10, pady=5, sticky=tk.W)
+        first_vaccine_checkbox = tk.Checkbutton(window, text="1st Vaccine", bg="#370607", fg="white", bd="5", font=label_font_style, variable=self.first_vaccine_var, onvalue=True, offvalue=False)
+        first_vaccine_checkbox.grid(row=9, column=3, padx=10, pady=5, sticky=tk.W)
 
         self.second_vaccine_var = tk.BooleanVar()
-        second_vaccine_checkbox = tk.Checkbutton(window, text="2nd Vaccine", font=label_font_style, variable=self.second_vaccine_var, onvalue=True, offvalue=False)
-        second_vaccine_checkbox.grid(row=10, column=0, padx=10, pady=5, sticky=tk.W)
+        second_vaccine_checkbox = tk.Checkbutton(window, text="2nd Vaccine", bg="#370607", fg="white", bd="5", font=label_font_style, variable=self.second_vaccine_var, onvalue=True, offvalue=False)
+        second_vaccine_checkbox.grid(row=10, column=3, padx=10, pady=5, sticky=tk.W)
 
         self.booster_shot_var = tk.BooleanVar()
-        booster_shot_checkbox = tk.Checkbutton(window, text="Booster Shot", font=label_font_style, variable=self.booster_shot_var, onvalue=True, offvalue=False)
-        booster_shot_checkbox.grid(row=11, column=0, padx=10, pady=5, sticky=tk.W)
+        booster_shot_checkbox = tk.Checkbutton(window, text="Booster Shot", bg="#370607", fg="white", bd="5", font=label_font_style, variable=self.booster_shot_var, onvalue=True, offvalue=False)
+        booster_shot_checkbox.grid(row=11, column=3, padx=10, pady=5, sticky=tk.W)
         
         # Save button
-        save_button = tk.Button(window, text="SAVE", font=label_font_style, command=save_contact)
-        save_button.grid(row=15, column=0, padx=10, pady=20, sticky=tk.EW)
+        save_button = tk.Button(window, text="SAVE", font=label_font_style, bg="white", fg="#370607", bd=5, command=save_contact)
+        save_button.grid(row=15, column=2, padx=10, pady=20, sticky=tk.EW)
         
          # Center the button at the bottom
         window.grid_rowconfigure(15, weight=1)
@@ -319,6 +320,9 @@ class COVID_Contacts_Information:
         edit_window.geometry("1000x600")
         edit_window.resizable(False, False)
 
+        edit_window.config(bg="#006B65")
+
+
         # Create a frame to organize the layout of the listbox and the "Select" button
         frame = tk.Frame(edit_window)
         frame.pack(pady=10)
@@ -328,20 +332,31 @@ class COVID_Contacts_Information:
 
         # Listbox to display the contacts
         contact_listbox = tk.Listbox(edit_window, width=800, height=400, selectmode=tk.SINGLE)
-        for name in contact_names:
-            contact_listbox.insert(tk.END, name)
-        contact_listbox.pack(pady=10)
+            # Create a font object with your desired properties
+        contact_font = tkfont.Font(family="Poppins", size=12)
+
+        # Set the font for the listbox
+        contact_listbox.configure(font=contact_font, justify="center")
+
+        for contact in self.new_contacts:
+            full_name = f"{contact[0]} {contact[1]}"
+            email = f"Email: {contact[2]}"
+            phone = f"Phone: {contact[3]}"
+            details = f"{full_name:<30}{email:<40}{phone:<20}"
+            contact_listbox.insert(tk.END, details)
+            
+        contact_listbox.pack(pady=50, padx=100)
 
         buttons_frame = tk.Frame(edit_window)
         buttons_frame.pack(pady=5)
 
         # Button to select the contact to edit
-        select_button = tk.Button(frame, text="Select", command=edit_selected_contact)
-        select_button.pack(side=tk.LEFT, pady=5)
+        select_button = tk.Button(frame, text="Select", bg="#370607", fg="white",bd="5", command=edit_selected_contact)
+        select_button.pack(side=tk.LEFT, pady=5, padx=5, ipadx=10)
 
         # Cancel button
-        cancel_button = tk.Button(frame, text="Cancel", command=cancel_edit)
-        cancel_button.pack(side=tk.LEFT, pady=5)
+        cancel_button = tk.Button(frame, text="Cancel", bg="#370607", fg="white",bd="5", command=cancel_edit)
+        cancel_button.pack(side=tk.LEFT, pady=5, padx=5, ipadx=10)
 
         # Hide the menu window while the "Edit Contact" window is open
         self.menu_window.withdraw()
@@ -365,25 +380,53 @@ class COVID_Contacts_Information:
         edit_window = tk.Toplevel(menu_window)
         edit_window.title("Edit Contact Fields")
         edit_window.geometry("1000x600")
+        edit_window.config(bg="#370607")
         edit_window.resizable(False, False)
+        
+        # Create a frame to hold the content and apply padding
+        content_frame = tk.Frame(edit_window, bg="#370607")
+        content_frame.pack(pady=20, padx=10)
+
         edit_options = ["First Name", "Last Name", "Email Address", "Contact Number"]
         fields = {}
 
         # Entry fields for each contact field
         for option in edit_options:
-            label = tk.Label(edit_window, text=option)
-            label.pack(pady=5)
-            entry = tk.Entry(edit_window)
-            entry.pack(pady=5)
+            label = tk.Label(content_frame, text=option, bg="#370607", fg="white", font=("Arial", 12))
+            label.grid(row=edit_options.index(option), column=0, pady=5, sticky="w")
+
+            entry = tk.Entry(content_frame, bg="white", fg="#370607", font=("Arial", 12))
+            entry.grid(row=edit_options.index(option), column=1, pady=5, padx=10, ipadx=50, sticky="w")
             entry.insert(0, contact[edit_options.index(option)])
             fields[option] = entry
 
         # Save and Cancel buttons
+        button_frame = tk.Frame(edit_window, bg="#370607")
+        button_frame.pack(pady=20)
+
         save_button = tk.Button(edit_window, text="Save", command=lambda: save_edited_contact(contact, fields))
         cancel_button = tk.Button(edit_window, text="Cancel", command=cancel_edit)
         
         cancel_button.pack(side=tk.BOTTOM, pady=5)
         save_button.pack(side=tk.BOTTOM, pady=10)
+            
+        
+        # Apply padding to all widgets in content_frame
+        for child in content_frame.winfo_children():
+            child.grid_configure(padx=10, pady=5)
+        
+        # Center the window on the screen
+        edit_window.update_idletasks()
+        screen_width = edit_window.winfo_screenwidth()
+        screen_height = edit_window.winfo_screenheight()
+        window_width = edit_window.winfo_width()
+        window_height = edit_window.winfo_height()
+        x = (screen_width - window_width) // 2
+        y = (screen_height - window_height) // 2
+        edit_window.geometry(f"+{x}+{y}")
+
+        # Hide the menu window while the "Edit Contact" window is open
+        menu_window.withdraw()
 
     def delete_contact(self):
         def delete_selected_contact():
@@ -395,29 +438,58 @@ class COVID_Contacts_Information:
                 self.save_contacts()  # Save the updated contacts
                 messagebox.showinfo("Success", "Contact deleted successfully.")
                 delete_window.destroy()
-                self.show_menu()
+                #self.show_menu()
                 self.menu_window.deiconify()
             else:
                 messagebox.showinfo("Invalid Input", "Please select a contact to delete.")
+
+        def cancel_delete():
+            delete_window.destroy()
+            self.show_menu()
 
         # Create the "Delete Contact" window
         delete_window = tk.Toplevel(self.menu_window)
         delete_window.title("Delete Contact")
         delete_window.geometry("1000x600")
         delete_window.resizable(False, False)
+        delete_window.config(bg="#006B65")
 
-        # Get all contacts' full names for the listbox
-        contact_names = [f"{contact[0]} {contact[1]}" for contact in self.new_contacts]
+        # Create a frame to organize the layout of the listbox and the "Select" and "Cancel" button
+        frame = tk.Frame(delete_window)
+        frame.pack(pady=10)
+        
+        # Get all contacts' details for the listbox
+        contact_details = [f"Name: {contact[0]} {contact[1]}\nEmail: {contact[2]}\nPhone: {contact[3]}" for contact in self.new_contacts]
 
         # Listbox to display the contacts
-        contact_listbox = tk.Listbox(delete_window, width=30, height=10, selectmode=tk.SINGLE)
-        for name in contact_names:
-            contact_listbox.insert(tk.END, name)
-        contact_listbox.pack(pady=10)
+        contact_listbox = tk.Listbox(delete_window, width=800, height=400, selectmode=tk.SINGLE)
+        
+        # Create a font object with your desired properties
+        contact_font = tkfont.Font(family="Poppins", size=12)
+
+        # Set the font and center the text in the listbox
+        contact_listbox.configure(font=contact_font, justify='center')
+
+        for contact in contact_details:
+            full_name = f"{contact[0]} {contact[1]}"
+            email = f"Email: {contact[2]}"
+            phone = f"Phone: {contact[3]}"
+            details = f"{full_name:<30}{email:<40}{phone:<20}"
+            contact_listbox.insert(tk.END, details)
+
+        contact_listbox.pack(pady=50, padx=100)
+
+        # Create a frame to organize the layout of the listbox and the "Delete" button
+        frame = tk.Frame(delete_window)
+        frame.pack(pady=10)
 
         # Button to select the contact to delete
-        delete_button = tk.Button(delete_window, text="Delete", command=delete_selected_contact)
-        delete_button.pack(pady=5)
+        delete_button = tk.Button(frame, text="Delete", bg="#370607", fg="white",bd="5", command=delete_selected_contact)
+        delete_button.pack(side=tk.LEFT, pady=5, padx=5, ipadx=10)
+
+        # Cancel Button
+        cancel_button = tk.Button(frame, text="Cancel",  command=cancel_delete)
+        cancel_button.pack(side=tk.LEFT, pady=5, padx=5, ipadx=10)
 
         # Hide the menu window while the "Delete Contact" window is open
         self.menu_window.withdraw()
