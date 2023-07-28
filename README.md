@@ -53,11 +53,11 @@ Safe Tract is a simple COVID-19 Contact Tracing Program that allows users to man
 
 ## Screenshots
 
-![Screenshot 1]("C:\Users\gerik\OneDrive\Pictures\Screenshots\Screenshot 2023-07-28 212950.png")
 *Main Window*
+![image](https://github.com/gerikah/COVID-19-Contact-Tracing/assets/128887408/0a4db652-c4fb-43ca-8df9-20c0aacb7bd8)
 
-![Screenshot 2]("C:\Users\gerik\OneDrive\Pictures\Screenshots\Screenshot 2023-07-28 213115.png")
 *Menu Window*
+![image](https://github.com/gerikah/COVID-19-Contact-Tracing/assets/128887408/37761f59-b4e5-4b50-abfd-c8421abf8802)
 
 ## Contributing
 
@@ -73,10 +73,3 @@ If you have any questions or feedback, feel free to reach out to the project mai
 
 - Name: [Your Name]
 - Email: [your.email@example.com]
-
----
-_Replace the placeholders such as `/path/to/your/logo.png`, `/path/to/screenshots/screenshot1.png`, `[Your Name]`, and `[your.email@example.com]` with the relevant information._
-
-Remember to include any necessary images like your program's logo and screenshots to make the README visually appealing and informative. Also, update the installation instructions based on your project's structure if needed.
-
-Once you have created the README file, you can save it as `README.md` in the root directory of your project. This will be the default file that GitHub or other platforms will display when users visit your project repository.
