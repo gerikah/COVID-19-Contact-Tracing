@@ -438,14 +438,13 @@ class COVID_Contacts_Information:
                 self.save_contacts()  # Save the updated contacts
                 messagebox.showinfo("Success", "Contact deleted successfully.")
                 delete_window.destroy()
-                #self.show_menu()
                 self.menu_window.deiconify()
             else:
                 messagebox.showinfo("Invalid Input", "Please select a contact to delete.")
 
         def cancel_delete():
             delete_window.destroy()
-            self.show_menu()
+            self.menu_window.deiconify()
 
         # Create the "Delete Contact" window
         delete_window = tk.Toplevel(self.menu_window)
@@ -455,7 +454,7 @@ class COVID_Contacts_Information:
         delete_window.config(bg="#006B65")
 
         # Create a frame to organize the layout of the listbox and the "Select" and "Cancel" button
-        frame = tk.Frame(delete_window)
+        frame = tk.Frame(delete_window, bg="#006B65")
         frame.pack(pady=10)
         
         # Get all contacts' details for the listbox
@@ -479,18 +478,24 @@ class COVID_Contacts_Information:
 
         contact_listbox.pack(pady=50, padx=100)
 
-        # Create a frame to organize the layout of the listbox and the "Delete" button
-        frame = tk.Frame(delete_window)
-        frame.pack(pady=10)
-
         # Button to select the contact to delete
-        delete_button = tk.Button(frame, text="Delete", bg="#370607", fg="white",bd="5", command=delete_selected_contact)
+        delete_button = tk.Button(frame, text="Delete", bg="#370607", fg="white",bd="5", command=delete_selected_contact, font=("Poppins", 12, "bold"))
         delete_button.pack(side=tk.LEFT, pady=5, padx=5, ipadx=10)
 
         # Cancel Button
-        cancel_button = tk.Button(frame, text="Cancel",  command=cancel_delete)
+        cancel_button = tk.Button(frame, text="Cancel", bg="#370607", fg="white",bd="5", command=cancel_delete, font=("Poppins", 12, "bold"))
         cancel_button.pack(side=tk.LEFT, pady=5, padx=5, ipadx=10)
 
+        # Center the window on the screen
+        delete_window.update_idletasks()
+        screen_width = delete_window.winfo_screenwidth()
+        screen_height = delete_window.winfo_screenheight()
+        window_width = delete_window.winfo_width()
+        window_height = delete_window.winfo_height()
+        x = (screen_width - window_width) // 2
+        y = (screen_height - window_height) // 2
+        delete_window.geometry(f"+{x}+{y}")
+        
         # Hide the menu window while the "Delete Contact" window is open
         self.menu_window.withdraw()
 
